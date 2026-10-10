@@ -1216,7 +1216,10 @@ main.withfab{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
   // ---------- Bot bilan aloqa (shifrlangan, ntfy.sh orqali) ----------
   // Kalit va topic: menyu tugmasidan - manzilning # qismida; chatlar ro'yxatidagi «Ochish» (BotFather) dan - ? qismida
   var H = new URLSearchParams(window.__pbHash.replace(/^#/, '')), QS = new URLSearchParams(location.search);
-  var BOT_PUB = H.get('k') || QS.get('k') || '', REQ = H.get('q') || QS.get('q') || '';
+  // Zaxira: manzilda kalit kelmasa (masalan, chatlar ro'yxatidagi «Ochish»), shu botning ochiq kaliti va topic'i.
+  // Ikkalasi ham sir emas: ochiq kalit faqat shifrlash uchun, so'rovni baribir Telegram imzosi tasdiqlaydi.
+  var DEF_K = 'BNY2gH5urOCUfBlWr9j120AAX-eH7M-6ly1bLDfEKphohiGstU7Odu2FyuITX4xaiwXGHLwEC4fzFVZKEXkbh58', DEF_Q = 'pb-q-l4lS5Uk_FW7nENMmS1Df51Fy';
+  var BOT_PUB = H.get('k') || QS.get('k') || DEF_K, REQ = H.get('q') || QS.get('q') || DEF_Q;
   // Mahalliy sinovda (faqat 127.0.0.1) soxta ntfy; boshqa hamma joyda ntfy.sh
   var NTFY = (location.hostname === '127.0.0.1' && typeof window.__PB_TEST_NTFY === 'string') ? window.__PB_TEST_NTFY : 'https://ntfy.sh';
   function b64u(bytes) { var s = ''; for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }
@@ -1281,7 +1284,8 @@ main.withfab{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
     throw new Error('bot javob bermadi — Mac yoqilganini tekshiring');
   }
   function canAsk() {
-    if (!INIT || !BOT_PUB || !REQ) { status("Sahifani botdagi «Yozish» tugmasidan oching.", 'bad', true); return false; }
+    if (!INIT) { status("Telegram kirgan odamni bermadi. Sahifani botdagi «Yozish» tugmasidan oching." + (tg ? ' [' + (tg.platform || '?') + ' ' + (tg.version || '?') + ']' : ' [telegram yo\'q]'), 'bad', true); return false; }
+    if (!BOT_PUB || !REQ) { status("Sahifani botdagi «Yozish» tugmasidan oching.", 'bad', true); return false; }
     return true;
   }
   async function load(manual) {

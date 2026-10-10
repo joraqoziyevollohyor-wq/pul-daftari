@@ -511,13 +511,15 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
     add(v, setRow('Hisoblar', liveAccts(null).length + ' ta', openAccounts),
       setRow('AI tahlil', 'shu oy', openAdvice),
       setRow('Zakot kalkulyatori', '', openZakat),
-      setRow('Statistika', '6 oy', openStats));
+      setRow('Statistika', '6 oy', openStats),
+      setRow('Moliyaviy savodxonlik', '6 dars', openLessons));
     v.appendChild(el('div', 'lbl2', 'Qanday yoziladi'));
     [["Botga oddiy yozing: ", 'taksi 20 ming', ', ', 'oylik keldi 5 mln kartaga', '.'],
      ["Hisoblar orasida: ", 'kartadan 500 ming naqd yechdim', '.'],
      ["Qarz: ", 'Akmalga 1 mln qarz berdim, 15-noyabrgacha', ' va ', 'Akmal 300 ming qaytardi', '.'],
      ["Bo'lishish: ", "restoranda 600 ming to'ladim, 3 kishi edik, Ali va Vali qaytaradi", '.'],
-     ["Maqsad: ", "mashina uchun 2 mln yig'dim", '.']].forEach(function (p) {
+     ["Maqsad: ", "mashina uchun 2 mln yig'dim", '.'],
+     ["Chekdagi QR kod: telefon kamerasi bilan skanerlang va chiqqan ", 'ofd.soliq.uz/...', " havolasini botga yuboring."]].forEach(function (p) {
       var n = el('p', 'note'); p.forEach(function (x, i) { n.appendChild(i % 2 ? el('code', null, x) : document.createTextNode(x)); }); v.appendChild(n);
     });
     v.appendChild(el('p', 'note', "Ovozli xabar yoki chek rasmini yuborsangiz ham bo'ladi. Bot nima tushunganini ko'rsatadi — «Saqlash»ni bosasiz. Xato bo'lsa, yozuvni shu yerda bosib tuzating yoki o'chiring."));
@@ -564,9 +566,9 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
     });
     return w;
   }
-  function formBar(primary, onPrimary, secondary, onSecondary) {
+  function formBar(primary, onPrimary, secondary, onSecondary, plain) {
     var f = el('div', 'fbar' + (secondary ? '' : ' one'));
-    var p = btn(primary, 'pri', onPrimary); f.appendChild(p);
+    var p = btn(primary, plain ? '' : 'pri', onPrimary); f.appendChild(p);
     if (secondary) f.appendChild(btn(secondary, secondary === "O'chirish" || secondary === 'Yashirish' ? 'danger' : '', onSecondary));
     return f;
   }
@@ -758,7 +760,7 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
         formBar(g[6] ? 'Saqlash' : 'Bajarildi', function () {
           var a = parseAmt(tgt.value) || (g[2] ? g[2] / (usd ? 100 : 1) : 0); if (!a) { m2.className = 'msg bad'; m2.textContent = 'Summani yozing'; return; }
           send({ t: 'goal_edit', id: g[0], target: a, deadline: dl.value, done: g[6] ? 1 : 1 }, m2, true);
-        }, "O'chirish", function () { confirmDo("Maqsad o'chirilsinmi? Yig'ilgan pul hisoblarga qaytadi.", function () { send({ t: 'goal_edit', id: g[0], del: 1 }, m2, true); }); }));
+        }, "O'chirish", function () { confirmDo("Maqsad o'chirilsinmi? Yig'ilgan pul hisoblarga qaytadi.", function () { send({ t: 'goal_edit', id: g[0], del: 1 }, m2, true); }); }, !g[6]));
       if (!g[6]) f2.insertBefore(btn('Saqlash', '', function () {
         var a = parseAmt(tgt.value); if (!a) { m2.className = 'msg bad'; m2.textContent = 'Summani yozing'; return; }
         send({ t: 'goal_edit', id: g[0], target: a, deadline: dl.value, done: 0 }, m2, false, function () { openGoal(g[0]); });
@@ -870,6 +872,25 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
       [cash, usdI, rate, gold, gPrice, goods, recv, debt].forEach(function (i) { i.addEventListener('input', calc); });
       calc();
       v.appendChild(el('p', 'note', "Hisob taxminiy. Aniq hukm uchun imom yoki muftiyga murojaat qiling."));
+    });
+  }
+
+  // Moliyaviy savodxonlik: qisqa darslar (umumiy qoidalar)
+  var LESSONS = [
+    ['Avval o\'zingizga to\'lang', "Kirim tushgan kuniyoq uning 10–20% ini jamg'arma hisobiga yoki maqsadga o'tkazing. Oy oxirida «nima qolsa» yig'ish odatda ishlamaydi: qolmaydi."],
+    ['50 / 30 / 20 qoidasi', "Kirimning taxminan 50% i zarur xarajatga (uy, oziq-ovqat, kommunal, yo'l), 30% i xohishga (kafe, dam olish, kiyim), 20% i jamg'arma va qarz to'lashga. Bu aniq qonun emas — o'z raqamlaringizni shu bilan solishtirib ko'ring."],
+    ['Favqulodda zaxira', "3–6 oylik zarur xarajatga teng pulni alohida hisobda saqlang. Kasallik, ishsiz qolish yoki mashina ta'miri kabi kutilmagan holatda qarzga botmaslikka yordam beradi. «Reja»da maqsad qilib qo'ying."],
+    ['Qarzni boshqarish', "Oylik qarz to'lovlari kirimning uchdan biridan oshmasin. Bir nechta qarz bo'lsa, avval eng qimmatini (foizi yuqori yoki muddati o'tganini) yoping. Har qarzga qaytarish sanasini yozing — bot eslatadi."],
+    ['Mayda xarajatlar', "Kuniga 30 ming so'mlik kofe va taksi oyiga taxminan 900 ming bo'ladi. Eng ko'p mayda xarajat ketadigan bo'limga oylik byudjet qo'ying — 80% ga yetganda bot ogohlantiradi."],
+    ['Har kuni yozing', "Yozilmagan xarajatni boshqarib bo'lmaydi. Pul sarflagan zahoti botga bir qator yozing yoki ovoz yuboring. Haftada bir marta hisobotni va «AI tahlil»ni ko'ring."]
+  ];
+  function openLessons() {
+    sheet('Moliyaviy savodxonlik', function (v) {
+      LESSONS.forEach(function (l, i) {
+        v.appendChild(el('div', 'lbl2', (i + 1) + '. ' + l[0]));
+        v.appendChild(el('p', 'note', l[1]));
+      });
+      v.appendChild(el('p', 'note', "Bu umumiy qoidalar — shaxsiy moliyaviy maslahat emas."));
     });
   }
 

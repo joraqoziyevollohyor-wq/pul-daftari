@@ -1214,8 +1214,9 @@ main.withfab{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
   function keep(d) { var c = JSON.parse(JSON.stringify(d)); delete c.r; try { localStorage.setItem(cacheKey(d.m), JSON.stringify(c)); } catch (e) {} }
 
   // ---------- Bot bilan aloqa (shifrlangan, ntfy.sh orqali) ----------
-  var H = new URLSearchParams(window.__pbHash.replace(/^#/, ''));
-  var BOT_PUB = H.get('k') || '', REQ = H.get('q') || '';
+  // Kalit va topic: menyu tugmasidan - manzilning # qismida; chatlar ro'yxatidagi «Ochish» (BotFather) dan - ? qismida
+  var H = new URLSearchParams(window.__pbHash.replace(/^#/, '')), QS = new URLSearchParams(location.search);
+  var BOT_PUB = H.get('k') || QS.get('k') || '', REQ = H.get('q') || QS.get('q') || '';
   // Mahalliy sinovda (faqat 127.0.0.1) soxta ntfy; boshqa hamma joyda ntfy.sh
   var NTFY = (location.hostname === '127.0.0.1' && typeof window.__PB_TEST_NTFY === 'string') ? window.__PB_TEST_NTFY : 'https://ntfy.sh';
   function b64u(bytes) { var s = ''; for (var i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]); return btoa(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, ''); }

@@ -705,6 +705,11 @@ main.withfab{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
       if (!Array.isArray(m)) return;
       v.appendChild(add(el('div', 'trow mon3'), add(el('div', 'n'), el('span', null, monthName(String(m[0])))), el('span', 'tm2 pos', full(num(m[usd ? 3 : 1]), u)), el('span', 'tm2', full(num(m[usd ? 4 : 2]), u))));
     });
+    if (Array.isArray(D.adm)) {
+      var wait = D.adm.filter(function (x) { return x[3] === 'kutish'; }).length;
+      v.appendChild(el('div', 'lbl2', 'Bot egasi'));
+      v.appendChild(setRow('Admin panel · ruxsatlar', wait ? wait + ' ta kutmoqda' : D.adm.length + ' ta odam', openAdmin));
+    }
     v.appendChild(el('div', 'lbl2', 'Boshqaruv'));
     var openDebts = (D.d || []).filter(function (d) { return !d[9]; }).length;
     add(v, setRow('Qarzlar', openDebts ? openDebts + ' ta ochiq' : '', openDebts_),
@@ -762,6 +767,48 @@ main.withfab{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
   }
   // Amal tugagach: varaqni yopish (back=true) yoki qayta chizish
   function done(back) { return function () { if (back) closeSheet(); else drawSheet(); }; }
+
+  // Admin panel (faqat egasi): ruxsat berish, rad etish, to'xtatish, qaytarish
+  var AF = 'kutish';
+  var ST_NAME = { kutish: 'Kutmoqda', ruxsat: 'Ruxsat berilgan', rad: 'Rad etilgan', toxtatilgan: "To'xtatilgan" };
+  function fmtDate(sec) { var d = new Date((num(sec) + 5 * 3600) * 1000).toISOString(); return d.slice(8, 10) + '.' + d.slice(5, 7) + '.' + d.slice(0, 4); }
+  function openAdmin() {
+    sheet('Admin panel · ruxsatlar', function (v) {
+      var us = (D.adm || []).filter(Array.isArray), cnt = function (st) { return us.filter(function (x) { return st === 'yopiq' ? (x[3] === 'rad' || x[3] === 'toxtatilgan') : x[3] === st; }).length; };
+      var seg = el('div', 'seg');
+      [['kutish', 'Kutmoqda'], ['ruxsat', 'Ruxsatli'], ['yopiq', "To'xtatilgan"]].forEach(function (o) {
+        var b = el('button', null, o[1] + ' · ' + cnt(o[0])); b.type = 'button'; b.setAttribute('aria-selected', String(AF === o[0]));
+        b.addEventListener('click', function () { AF = o[0]; drawSheet(); }); seg.appendChild(b);
+      });
+      v.appendChild(seg);
+      var list = us.filter(function (x) { return AF === 'yopiq' ? (x[3] === 'rad' || x[3] === 'toxtatilgan') : x[3] === AF; });
+      if (!list.length) v.appendChild(el('p', 'empty', AF === 'kutish' ? "Kutayotgan odam yo'q. Bot havolasini yuboring: odam «Start» bosganda shu yerga tushadi." : "Ro'yxat bo'sh."));
+      list.forEach(function (x) {
+        var r = el('button', 'row'); r.type = 'button';
+        add(r, el('div', 'av', initials(x[1])));
+        var g = el('div', 'gr'); add(g, el('div', 't1', x[1] + (x[2] ? ' · @' + x[2] : '')), el('div', 't2', ST_NAME[x[3]] + ' · ' + fmtDate(x[4]) + (x[5] ? ' · ' + x[5] + ' ta yozuv' : '')));
+        add(r, g, ico('chev', 16)); r.addEventListener('click', function () { openUser(x[0]); }); v.appendChild(r);
+      });
+    });
+  }
+  function openUser(id) {
+    var x = (D.adm || []).find(function (y) { return y[0] === id; }); if (!x) return;
+    sheet(x[1], function (v) {
+      x = (D.adm || []).find(function (y) { return y[0] === id; }) || x;
+      var rep = el('div', 'rep');
+      [['Holati', ST_NAME[x[3]]], ['Telegram', x[2] ? '@' + x[2] : '—'], ['Kelgan', fmtDate(x[4])], ['Yozuvlari', x[5] + ' ta']].forEach(function (y) { var r = el('div', 'set'); add(r, el('span', 'k', y[0]), el('span', 'val', y[1])); rep.appendChild(r); });
+      v.appendChild(rep);
+      var form = el('div', 'form'), msg = msgBox();
+      var go2 = function (st) { send({ t: 'user_set', id: x[0], status: st }, msg, done(true)); };
+      if (x[3] === 'kutish') form.appendChild(formBar('Ruxsat berish', function () { go2('ruxsat'); }, 'Rad etish', function () { go2('rad'); }));
+      else if (x[3] === 'ruxsat') form.appendChild(formBar("To'xtatish", function () { confirmDo(x[1] + " botdan foydalana olmasin?", function () { go2('toxtatilgan'); }); }, null, null, true));
+      else form.appendChild(formBar('Ruxsat berish', function () { go2('ruxsat'); }));
+      if (x[3] === 'ruxsat') form.lastChild.firstChild.className = 'btn danger';
+      form.appendChild(msg);
+      form.appendChild(el('p', 'hint', x[3] === 'ruxsat' ? "To'xtatilsa, uning yozuvlari o'chmaydi — qayta ruxsat berilsa hammasi joyida." : "Ruxsat berilganda bot unga o'zi xabar yozadi."));
+      v.appendChild(form);
+    });
+  }
 
   // Grafikdagi kun bosilganda: o'sha kunning hamma yozuvlari (so'm va dollar)
   function openDay(day) {

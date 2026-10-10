@@ -94,7 +94,8 @@ input,select,textarea{font:inherit;color:var(--ink);background:var(--tile);borde
 /* ===== Shu ilova uchun qo'shimcha (qo'llanma qoidalari ichida) ===== */
 [hidden]{display:none!important}
 .backb{box-sizing:border-box;width:100%}
-.kpi b small{font-size:15px;font-weight:500;margin-left:3px}
+.kpi b{font-size:26px}
+.kpi b small{font-size:13px;font-weight:500;margin-left:3px}
 :focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
 .trow.money{grid-template-columns:minmax(0,1fr) 112px 44px}
 .trow.mon3{grid-template-columns:minmax(0,1fr) 104px 104px}
@@ -145,36 +146,103 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
 .zres{padding:14px 20px;border-top:1px solid var(--line)}
 .zres b{display:block;font-family:var(--f-mono);font-weight:500;font-size:28px;margin:4px 0}
 </style>
+<style>
+/* ===== Yozish ekrani (asosiy) ===== */
+.entry{padding:0 20px}
+.amtw{position:relative;padding:22px 0 14px;text-align:center;border-bottom:1px solid var(--line)}
+.amtw .sign{font-family:var(--f-mono);font-size:22px;color:var(--muted);vertical-align:middle}
+.amtw input{all:unset;box-sizing:border-box;font-family:var(--f-mono);font-size:32px;font-weight:500;line-height:1.1;text-align:center;width:72%;min-height:56px;color:var(--ink);caret-color:var(--accent)}
+.amtw input::placeholder{color:var(--off)}
+.amtw .cur{all:unset;cursor:pointer;display:inline-block;min-width:44px;min-height:32px;line-height:32px;padding:0 10px;border:1px solid var(--line);border-radius:4px;font-size:14px;font-weight:500;color:var(--muted);vertical-align:middle}
+.amtw.in .sign{color:var(--ok)}
+.meta2{display:flex;gap:8px;padding:12px 0 4px}
+.meta2 select,.meta2 input{min-height:36px;height:36px;font-size:13px;padding:0 10px;border-radius:4px;background:transparent;color:var(--muted)}
+.meta2 select{flex:1.4}.meta2 input{flex:1}
+.cpick{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;width:100%;min-height:52px;padding:6px 0;border-bottom:1px solid var(--line)}
+.cpick .ic{width:36px;height:36px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--tile);border:1px solid var(--line);font-family:var(--f-mono);font-size:12px}
+.cpick .t{flex:1;font-size:15px}
+.cpick .t.ph{color:var(--muted)}
+.cpick.sel .ic{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.clist{max-height:46vh;overflow:auto;border-bottom:1px solid var(--line)}
+.clist button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:4px 0;border-top:1px solid var(--line);font-size:15px}
+.clist button:first-child{border-top:0}
+.clist .ic{width:32px;height:32px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--tile);border:1px solid var(--line);font-family:var(--f-mono);font-size:12px}
+.clist button[aria-pressed="true"]{font-weight:600;color:var(--accent)}
+.clist .addc{color:var(--accent)}
+.cgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px 6px;padding:6px 0 4px}
+.cgrid button{all:unset;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;min-height:72px;text-align:center}
+.cgrid .ic{width:48px;height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:var(--tile);border:1px solid var(--line);color:var(--ink);font-family:var(--f-mono);font-size:15px;font-weight:500}
+.cgrid .nm{font-size:12px;line-height:1.25;color:var(--muted);max-width:100%;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.cgrid button[aria-pressed="true"] .ic{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.cgrid button[aria-pressed="true"] .nm{color:var(--ink);font-weight:600}
+.cgrid .addc .ic{border-style:dashed;background:transparent;color:var(--accent)}
+.newcat{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin:6px 0 4px}
+.newcat .btn{height:44px}
+.note1{margin:10px 0 0}
+/* Asosiy ekran va «+» */
+.hero{padding:18px 20px 14px;border-bottom:1px solid var(--line)}
+.hero .k{font-size:13px;color:var(--muted)}
+.hero b{display:block;font-family:var(--f-mono);font-weight:500;font-size:28px;line-height:1.15;margin:4px 0 6px}
+.hero b small{font-size:14px;color:var(--muted);margin-left:6px}
+.hero .sub{display:flex;gap:16px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
+.hero .sub span b{display:inline;font-size:13px;margin:0;color:var(--ink)}
+.htab{display:grid;grid-template-columns:34px minmax(0,1.3fr) minmax(0,1fr) minmax(0,.9fr);gap:6px 8px;align-items:baseline;margin-top:10px}
+.htab .r{text-align:right}
+.htab .hh{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute2)}
+.htab .cu{font-size:13px;color:var(--muted)}
+.htab .vx{font-family:var(--f-mono);font-size:20px;font-weight:500;white-space:nowrap}
+.htab .vk,.htab .vb{font-family:var(--f-mono);font-size:14px;color:var(--muted);white-space:nowrap}
+.hero .sub.usd{margin-top:6px;padding-top:6px;border-top:1px solid var(--line);font-size:12px}
+.hero .sub.usd span b{font-size:12px}
+.chart{padding:12px 20px 6px;border-bottom:1px solid var(--line)}
+.chart svg{display:block;width:100%;height:auto}
+.chart .ax{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:11px;color:var(--mute2);margin-top:4px}
+.chart .cap{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.hb{all:unset;box-sizing:border-box;cursor:pointer;width:100%;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;align-items:center;padding:10px 20px;border-top:1px solid var(--line)}
+.hb .nm{display:flex;align-items:center;gap:10px;min-width:0;font-size:15px}
+.hb .nm .ic{width:32px;height:32px;border-radius:8px;flex:none;display:flex;align-items:center;justify-content:center;background:var(--tile);border:1px solid var(--line);font-family:var(--f-mono);font-size:12px}
+.hb .nm span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hb .am{font-family:var(--f-mono);font-size:14px;text-align:right}
+.hb .pc{font-size:12px;color:var(--muted);text-align:right;white-space:nowrap}
+.hb .prog{margin:0 0 0 42px}
+.fab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom));width:64px;height:64px;min-height:64px;border-radius:50%;border:4px solid var(--bg);outline:1px solid var(--line-2);background:var(--accent);color:var(--accent-ink);display:flex;align-items:center;justify-content:center;z-index:30;padding:0}
+.tabs{grid-template-columns:1fr 96px 1fr;grid-auto-flow:row}
+.tabgap{display:block}
+.thm{all:unset;cursor:pointer;width:44px;height:44px;display:flex;align-items:center;justify-content:center;margin:-12px -10px -12px 6px;color:var(--muted);align-self:center}
+.fab svg{width:30px;height:30px}
+.ov{position:fixed;inset:0;z-index:40}
+.ovbg{position:absolute;inset:0;background:var(--ink);opacity:.38}
+.pan{position:absolute;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;max-height:92vh;overflow:auto;background:var(--bg);border-top:1px solid var(--line-2);border-radius:8px 8px 0 0;padding-bottom:env(safe-area-inset-bottom)}
+.pan .grab{display:flex;align-items:center;padding:10px 12px 6px 20px}
+.pan .grab b{flex:1;font-size:17px;font-weight:600}
+.pan .grab button{all:unset;cursor:pointer;min-width:44px;min-height:44px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:15px}
+.pan .savebar{position:sticky;bottom:0}
+.savebar{background:var(--bg);border-top:1px solid var(--line);padding:10px 16px}
+.savebar .in{max-width:528px;margin:0 auto}
+.savebar .btn{width:100%;height:52px;font-size:16px}
+.savebar .msg{margin:6px 0 0;min-height:0}
+main.withfab{padding-bottom:calc(150px + env(safe-area-inset-bottom))}
+.lbl3{display:block;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:16px 0 6px}
+.rep .set{cursor:default}
+.rep .set .val{font-family:var(--f-mono);font-size:16px;color:var(--ink);margin-right:0}
+</style>
 </head>
 <body>
 <main>
-  <header class="bar"><h1 id="title">Pul daftari</h1><span class="meta" id="meta"></span></header>
+  <header class="bar"><h1 id="title">Pul daftari</h1><span class="meta" id="meta"></span><button type="button" class="thm" id="thm" aria-label="Kunduzgi yoki kechki rang"></button></header>
   <div class="status" id="status" hidden role="status" aria-live="polite"></div>
-
-  <div class="month" id="monthBar">
-    <button type="button" id="mPrev" aria-label="Oldingi oy"></button>
-    <span class="m" id="mName"></span>
-    <button type="button" id="mNext" aria-label="Keyingi oy"></button>
-  </div>
-  <div class="seg" id="curSeg" role="tablist" hidden>
-    <button type="button" role="tab" data-cur="0" aria-selected="true">So'm</button>
-    <button type="button" role="tab" data-cur="1" aria-selected="false">Dollar</button>
-  </div>
-
   <section id="v-home"></section>
   <section id="v-list" hidden></section>
-  <section id="v-plan" hidden></section>
-  <section id="v-debt" hidden></section>
-  <section id="v-more" hidden></section>
+  <section id="v-rep" hidden></section>
   <section id="v-sheet" hidden></section>
 </main>
+<button type="button" class="fab" id="fab" aria-label="Xarajat yozish"><span data-ico="plus"></span></button>
+<div class="ov" id="ov" hidden><div class="ovbg" id="ovbg"></div><div class="pan" id="pan" role="dialog" aria-modal="true" aria-label="Yozish"></div></div>
 
 <nav class="tabs" id="tabs" role="tablist">
-  <button type="button" data-tab="home" aria-selected="true"><span data-ico="home"></span>Bosh</button>
-  <button type="button" data-tab="list" aria-selected="false"><span data-ico="menu"></span>Yozuvlar</button>
-  <button type="button" data-tab="plan" aria-selected="false"><span data-ico="target"></span>Reja</button>
-  <button type="button" data-tab="debt" aria-selected="false"><span data-ico="users"></span>Qarzlar<span class="bdg" id="debtBdg" hidden></span></button>
-  <button type="button" data-tab="more" aria-selected="false"><span data-ico="info"></span>Ko'proq</button>
+  <button type="button" data-tab="home" aria-selected="true"><span data-ico="home"></span>Asosiy</button>
+  <span class="tabgap" aria-hidden="true"></span>
+  <button type="button" data-tab="rep" aria-selected="false"><span data-ico="chart"></span>Hisobot</button>
 </nav>
 
 <script>
@@ -185,30 +253,69 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
   var OPENED = Date.now();
   if (tg) { try { tg.ready(); tg.expand(); } catch (e) {} }
   // Telegram ichida - Telegram mavzusi; tashqarida (tg.platform 'unknown') - telefon sozlamasi (CSS media)
-  function applyTheme() { if (tg && tg.platform && tg.platform !== 'unknown' && tg.colorScheme) document.documentElement.setAttribute('data-theme', tg.colorScheme === 'dark' ? 'dark' : 'light'); }
+  // Rang: odam tanlagani (eslab qolinadi) > Telegram mavzusi > telefon sozlamasi
+  function savedTheme() { try { return localStorage.getItem('pb-theme') || ''; } catch (e) { return ''; } }
+  function applyTheme() {
+    var t = savedTheme();
+    if (!t && tg && tg.platform && tg.platform !== 'unknown' && tg.colorScheme) t = tg.colorScheme === 'dark' ? 'dark' : 'light';
+    if (t) document.documentElement.setAttribute('data-theme', t); else document.documentElement.removeAttribute('data-theme');
+    drawThm();
+  }
+  function isDark() { var t = document.documentElement.getAttribute('data-theme'); return t ? t === 'dark' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches); }
+  var thmReady = false;
+  function drawThm() { var b = document.getElementById('thm'); if (!b || !thmReady) return; while (b.firstChild) b.removeChild(b.firstChild); b.appendChild(ico(isDark() ? 'sun' : 'moon', 20)); }
+  document.getElementById('thm').addEventListener('click', function () {
+    try { localStorage.setItem('pb-theme', isDark() ? 'light' : 'dark'); } catch (e) {}
+    applyTheme();
+  });
   applyTheme();
   if (tg && tg.onEvent) tg.onEvent('themeChanged', applyTheme);
 
   // ---------- Belgilar (qo'llanma 5-bo'lim uslubida) ----------
   var ICO = {
-    home:  ['M3 11l9-7l9 7v10h-6v-6H9v6H3z'],
-    users: ['M9 4a4 4 0 1 1 0 8a4 4 0 0 1 0-8z','M3 21v-1a6 6 0 0 1 12 0v1','M16 4a4 4 0 0 1 0 8M21 21v-1a6 6 0 0 0-4-5.6'],
-    menu:  ['M4 7h16M4 12h16M4 17h16'],
-    info:  ['M12 3a9 9 0 1 1 0 18a9 9 0 0 1 0-18z','M12 16v-4M12 8h.01'],
-    target:['M12 3a9 9 0 1 1 0 18a9 9 0 0 1 0-18z','M12 8a4 4 0 1 1 0 8a4 4 0 0 1 0-8z','M12 12h.01'],
     plus:  ['M12 5v14M5 12h14'],
+    menu:  ['M4 7h16M4 12h16M4 17h16'],
+    chart: ['M4 20V10M10 20V4M16 20v-7M2 20h20'],
     chev:  ['M9 6l6 6l-6 6'],
-    back:  ['M15 6l-6 6l6 6']
+    back:  ['M15 6l-6 6l6 6'],
+    sun:   ['M12 8a4 4 0 1 1 0 8a4 4 0 0 1 0-8z','M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'],
+    moon:  ['M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z'],
+    cart:  ['M3 4h2l2.4 11h10.2L20 8H6.2','M9 20h.01M17 20h.01'],
+    car:   ['M5 16V11l2-5h10l2 5v5H5z','M5 11h14','M7.5 19v-3M16.5 19v-3'],
+    home:  ['M3 11l9-7l9 7v10h-6v-6H9v6H3z'],
+    bolt:  ['M13 3L5 14h6l-1 7l8-11h-6z'],
+    cup:   ['M5 8h11v6a5 5 0 0 1-5 5h-1a5 5 0 0 1-5-5z','M16 10h2a2 2 0 0 1 0 4h-2','M8 3v2M12 3v2'],
+    phone: ['M8 3h8v18H8z','M11 18h2'],
+    shirt: ['M8 4l4 2l4-2l4 3l-2 4l-2-1v10H8V10l-2 1l-2-4z'],
+    heart: ['M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z'],
+    book:  ['M4 5h7v14H4z','M13 5h7v14h-7z'],
+    kid:   ['M12 4a3 3 0 1 1 0 6a3 3 0 0 1 0-6z','M6 20v-2a6 6 0 0 1 12 0v2'],
+    play:  ['M12 3a9 9 0 1 1 0 18a9 9 0 0 1 0-18z','M10 8.5l5 3.5l-5 3.5z'],
+    gift:  ['M4 9h16v4H4z','M6 13v8h12v-8','M12 9v12','M12 9C10 5 7 5 7 7s5 2 5 2s5 0 5-2s-3-2-5 2'],
+    dots:  ['M6 12h.01M12 12h.01M18 12h.01'],
+    case:  ['M4 8h16v11H4z','M9 8V5h6v3','M4 13h16'],
+    bag:   ['M5 8h14l-1 12H6z','M9 8a3 3 0 0 1 6 0']
   };
+  // Kategoriya nomi bo'yicha belgi; odam yaratgan noma'lum nom - bosh harflari
+  var CAT_ICO = [[/oziq|ovqat|bozor|market|non/, 'cart'], [/transport|taksi|benzin|yo'l|mashina/, 'car'], [/uy|ijara|kvartira/, 'home'],
+    [/kommunal|svet|gaz|suv/, 'bolt'], [/kafe|restoran|ovqatlan|tushlik/, 'cup'], [/aloqa|telefon|internet/, 'phone'], [/kiyim/, 'shirt'],
+    [/sog'liq|dori|shifo|kasal/, 'heart'], [/ta'lim|o'qish|kurs|kitob/, 'book'], [/bola/, 'kid'], [/dam|kino|o'yin/, 'play'],
+    [/sovg'a|xayriya/, 'gift'], [/ish haqi|oylik|maosh/, 'case'], [/savdo|sotuv/, 'bag'], [/boshqa/, 'dots']];
+  function catIcon(name) {
+    var n = String(name || '').toLowerCase();
+    for (var i = 0; i < CAT_ICO.length; i++) if (CAT_ICO[i][0].test(n)) return ico(CAT_ICO[i][1], 22);
+    return document.createTextNode(initials(name));
+  }
   function ico(name, size) {
     var NS = 'http://www.w3.org/2000/svg', v = document.createElementNS(NS, 'svg');
     v.setAttribute('width', String(size || 22)); v.setAttribute('height', String(size || 22));
     v.setAttribute('viewBox', '0 0 24 24'); v.setAttribute('fill', 'none');
-    v.setAttribute('stroke', 'currentColor'); v.setAttribute('stroke-width', '1.7'); v.setAttribute('aria-hidden', 'true');
+    v.setAttribute('stroke', 'currentColor'); v.setAttribute('stroke-width', '1.7'); v.setAttribute('stroke-linecap', 'round'); v.setAttribute('stroke-linejoin', 'round'); v.setAttribute('aria-hidden', 'true');
     (ICO[name] || []).forEach(function (d) { var p = document.createElementNS(NS, 'path'); p.setAttribute('d', d); v.appendChild(p); });
     return v;
   }
   document.querySelectorAll('[data-ico]').forEach(function (s) { s.replaceWith(ico(s.getAttribute('data-ico'))); });
+  thmReady = true; drawThm();
 
   // ---------- Yordamchilar ----------
   function $(id) { return document.getElementById(id); }
@@ -216,12 +323,11 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
   function clear(n) { while (n.firstChild) n.removeChild(n.firstChild); return n; }
   function add(p) { for (var i = 1; i < arguments.length; i++) if (arguments[i]) p.appendChild(arguments[i]); return p; }
   function num(v) { v = Number(v); return isFinite(v) ? v : 0; }
-  var CATS_OUT = [['oziq', "Oziq-ovqat"], ['kafe', 'Kafe va restoran'], ['transport', 'Transport'], ['uy', 'Uy va ijara'], ['kommunal', 'Kommunal'], ['aloqa', 'Aloqa va internet'], ['oylik', 'Oylik va ish haqi'], ['tovar', 'Tovar va xomashyo'], ['soliq', "Soliq va to'lovlar"], ['sogliq', "Sog'liq"], ['kiyim', 'Kiyim'], ['talim', "Ta'lim"], ['dam', 'Dam olish'], ['sovga', "Sovg'a va xayriya"], ['boshqa', 'Boshqa chiqim']];
-  var CATS_IN = [['savdo', 'Savdo'], ['ish_haqi', 'Ish haqi'], ['boshqa_kirim', 'Boshqa kirim']];
-  var CAT_X = { qarz_berildi: 'Qarz berildi', qarz_tolandi: "Qarz to'landi", qarz_olindi: 'Qarz olindi', qarz_qaytdi: 'Qarz qaytdi' };
-  var CATN = {}; CATS_OUT.concat(CATS_IN).forEach(function (c) { CATN[c[0]] = c[1]; }); for (var k in CAT_X) CATN[k] = CAT_X[k];
-  function catName(k) { return CATN[k] || 'Boshqa'; }
+  var SYS = { qarz_berildi: 'Qarz berildi', qarz_tolandi: "Qarz to'landi", qarz_olindi: 'Qarz olindi', qarz_qaytdi: 'Qarz qaytdi' };
   function isDebtCat(c) { return String(c || '').indexOf('qarz') === 0; }
+  function C() { return D && Array.isArray(D.c) ? D.c.filter(Array.isArray) : []; }
+  function catName(k) { if (SYS[k]) return SYS[k]; var c = C().find(function (x) { return x[0] === k; }); return c ? c[1] : 'Boshqa'; }
+  function liveCats(type) { return C().filter(function (c) { return !c[3] && c[2] === type; }); }
   var MON = ['Yanvar', 'Fevral', 'Mart', 'Aprel', 'May', 'Iyun', 'Iyul', 'Avgust', 'Sentabr', 'Oktabr', 'Noyabr', 'Dekabr'];
   var WD = ['Yakshanba', 'Dushanba', 'Seshanba', 'Chorshanba', 'Payshanba', 'Juma', 'Shanba'];
   function grp(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' '); }
@@ -231,18 +337,16 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
     else s = grp(a);
     return (neg ? '−' : '') + s;
   }
-  function sm(minor, usd) { var p = short(minor, usd); return (usd ? '$' : '') + p[0] + (p[1] ? ' ' + p[1] : ''); }
   function moneyS(minor, usd) { return usd ? (minor < 0 ? '−$' : '$') + full(Math.abs(minor), true) : full(minor, false) + " so'm"; }
   function short(minor, usd) {
     var v = usd ? minor / 100 : minor, neg = v < 0, a = Math.abs(v), n, u = '';
     function f(x) { var r = x >= 100 ? Math.round(x) : Math.round(x * 10) / 10; return String(r).replace('.', ','); }
-    if (a >= 1e9) { n = f(a / 1e9); u = 'mlrd'; }
-    else if (a >= 1e6) { n = f(a / 1e6); u = 'mln'; }
-    else if (a >= 1e4) { n = f(a / 1e3); u = 'ming'; }
+    if (a >= 1e9) { n = f(a / 1e9); u = 'mlrd'; } else if (a >= 1e6) { n = f(a / 1e6); u = 'mln'; } else if (a >= 1e4) { n = f(a / 1e3); u = 'ming'; }
     else n = usd ? String(Math.round(a)) : grp(Math.round(a));
     return [(neg ? '−' : '') + n, u];
   }
-  // Foydalanuvchi yozgan summa: "150 000", "1,5", "1.5" -> son (asosiy birlikda)
+  function sm(minor, usd) { var p = short(minor, usd); return (usd ? '$' : '') + p[0] + (p[1] ? ' ' + p[1] : ''); }
+  // Yozilgan summa: "150 000", "1,5" -> son (asosiy birlikda)
   function parseAmt(s) { s = String(s || '').replace(/[\s ']/g, '').replace(',', '.'); if (!/^\d+(\.\d{1,2})?$/.test(s)) return 0; return Number(s); }
   function fmtInput(inp) {
     var raw = inp.value.replace(/[^\d.,]/g, ''), parts = raw.split(/[.,]/);
@@ -254,11 +358,16 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
   function shiftMonth(m, d) { var y = Number(m.slice(0, 4)), mo = Number(m.slice(5, 7)) - 1 + d; y += Math.floor(mo / 12); mo = ((mo % 12) + 12) % 12; return y + '-' + String(mo + 1).padStart(2, '0'); }
   function tashkentDay() { return new Date(Date.now() + 5 * 3600 * 1000).toISOString().slice(0, 10); }
   function initials(s) { var p = String(s || '?').trim().split(/\s+/); return ((p[0] || '?')[0] + (p[1] ? p[1][0] : '')).toUpperCase(); }
+  function btn(text, cls, fn) { var b = el('button', 'btn' + (cls ? ' ' + cls : ''), text); b.type = 'button'; b.addEventListener('click', fn); return b; }
+  function link(text, fn) { var a = el('a', null, text); a.href = '#'; a.addEventListener('click', function (e) { e.preventDefault(); fn(); }); return a; }
+  function setRow(k, val, fn) { var b = el('button', 'set'); b.type = 'button'; add(b, el('span', 'k', k), val ? el('span', 'val', val) : null, ico('chev', 16)); b.addEventListener('click', fn); return b; }
 
   // ---------- Holat ----------
-  var D = null, CUR = 0, F = -1, Q = '', TAB = 'home', DF = 1;
+  var D = null, CUR = 0, F = -1, Q = '', TAB = 'home';
   var MONTH = tashkentDay().slice(0, 7), THIS_MONTH = MONTH;
-  var busy = false, lastLoad = 0, again = false, SHEET = null;
+  var busy = false, lastLoad = 0, again = false, STACK = [];
+  // Yozish formasi holati (qayta chizilganda yo'qolmaydi)
+  var E = { type: 0, usd: false, cat: '', acct: null, note: '', day: '' };
 
   var stTimer = 0;
   function status(text, kind, keep) {
@@ -269,115 +378,195 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
   function A() { return D && Array.isArray(D.a) ? D.a.filter(Array.isArray) : []; }
   function acctName(id) { var a = A().find(function (x) { return x[0] === id; }); return a ? a[1] : ''; }
   function liveAccts(usd) { return A().filter(function (a) { return !a[5] && (usd == null || a[2] === usd); }); }
+  function acctSelect(usd, sel, exclude) {
+    var s = el('select');
+    liveAccts(usd).forEach(function (a) { if (a[0] === exclude) return; var o = el('option', null, a[1] + ' · ' + sm(a[4], a[2] === 1)); o.value = a[0]; if (a[0] === sel) o.selected = true; s.appendChild(o); });
+    return s;
+  }
+  function amtInput(val, usd, cls) {
+    var i = el('input', cls || 'big'); i.inputMode = 'decimal'; i.autocomplete = 'off'; i.placeholder = usd ? '0,00' : '0';
+    if (val) { i.value = usd ? String(val / 100).replace('.', ',') : String(val); fmtInput(i); }
+    i.addEventListener('input', function () { fmtInput(i); }); return i;
+  }
 
-  // ---------- Bosh ----------
-  function kpiBtn(id, minor, usd, label, go) {
-    var b = el('button'); b.type = 'button';
-    var v = el('b'); var p = short(minor, usd); v.textContent = p[0]; if (p[1]) v.appendChild(el('small', null, p[1]));
-    if (minor < 0) v.className = 'neg';
-    b.appendChild(v); b.appendChild(el('span', null, label)); b.addEventListener('click', go); b.id = id;
-    return b;
+  // ============ «+» : yozish oynasi (pastdan ochiladi) ============
+  var amtEl = null;
+  function openAdd() {
+    E.cat = ''; E.note = ''; E.day = '';
+    drawAdd('');
+    $('ov').hidden = false;
+    if (tg && tg.BackButton) { try { tg.BackButton.show(); } catch (e) {} }
+    setTimeout(function () { if (amtEl) amtEl.focus(); }, 80);
   }
-  function fitKpi() {
-    var bs = Array.prototype.slice.call(document.querySelectorAll('.kpi b'));
-    if (!bs.length || !bs[0].clientWidth) return;
-    var sizes = ['', '28px', '24px'];
-    for (var i = 0; i < sizes.length; i++) {
-      bs.forEach(function (b) { b.style.fontSize = sizes[i]; });
-      if (!bs.some(function (b) { return b.scrollWidth > b.clientWidth; })) return;
-    }
+  function closeAdd() {
+    $('ov').hidden = true; amtEl = null;
+    if (tg && tg.BackButton && !STACK.length) { try { tg.BackButton.hide(); } catch (e) {} }
   }
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitKpi);
-  function monthSums(usd) {
-    var inS = 0, outS = 0;
-    (D.e || []).forEach(function (r) { if (r[3] !== usd || isDebtCat(r[4])) return; if (r[1] === 1) inS += num(r[2]); else if (r[1] === 0) outS += num(r[2]); });
-    return [inS, outS];
-  }
-  function renderHome() {
-    var v = clear($('v-home')), usd = CUR, unit = usd ? 'dollar' : "so'm";
-    var s = monthSums(usd), bal = liveAccts(usd).reduce(function (t, a) { return t + num(a[4]); }, 0);
-    var kpi = el('div', 'kpi');
-    add(kpi, kpiBtn('kIn', s[0], usd, 'kirim, ' + unit, function () { F = 1; go('list'); }),
-      kpiBtn('kOut', s[1], usd, 'chiqim, ' + unit, function () { F = 0; go('list'); }),
-      kpiBtn('kBal', bal, usd, 'hisoblarda', function () { openAccounts(); }));
-    v.appendChild(kpi);
-
-    // Hozir e'tibor bering - faqat chora kerak bo'lganda
-    var items = [];
-    (D.b || []).forEach(function (b) {
-      if (b[1] !== usd || !b[2]) return; var p = b[3] / b[2];
-      if (p >= 1) items.push(['var(--danger)', (b[0] ? catName(b[0]) : 'Oylik') + ' byudjeti tugadi', full(b[3], usd) + ' / ' + full(b[2], usd) + ' ' + unit + ' · ' + Math.round(p * 100) + '%', function () { go('plan'); }]);
-      else if (p >= 0.8) items.push(['var(--warn-bar)', (b[0] ? catName(b[0]) : 'Oylik') + ' byudjeti ' + Math.round(p * 100) + '%', 'Qoldi: ' + full(b[2] - b[3], usd) + ' ' + unit, function () { go('plan'); }]);
+  $('fab').appendChild(ico('plus', 30)); $('fab').removeChild($('fab').firstChild);
+  $('fab').addEventListener('click', openAdd);
+  $('ovbg').addEventListener('click', closeAdd);
+  function drawAdd(keepAmt) {
+    var v = clear($('pan'));
+    var gb = el('div', 'grab'); var x = el('button', null, 'Yopish'); x.type = 'button'; x.addEventListener('click', closeAdd);
+    add(gb, el('b', null, 'Yozish'), x); v.appendChild(gb);
+    var seg = el('div', 'seg'); seg.setAttribute('role', 'tablist');
+    [[0, 'Chiqim'], [1, 'Kirim']].forEach(function (o) {
+      var b = el('button', null, o[1]); b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', String(E.type === o[0]));
+      b.addEventListener('click', function () { if (E.type !== o[0]) { E.type = o[0]; E.cat = ''; drawAdd(amtEl ? amtEl.value : ''); } });
+      seg.appendChild(b);
     });
-    (D.d || []).forEach(function (d) {
-      if (d[9] || !d[6] || d[6] > D.today || d[5] <= 0) return;
-      items.push([d[6] < D.today ? 'var(--danger)' : 'var(--warn-bar)', d[2] ? d[1] + ' qarzni qaytarishi kerak' : d[1] + 'ga qarzni qaytarish kerak', moneyS(d[5], d[4] === 1) + ' · muddat ' + dm(d[6]), function () { openDebt(d[0]); }]);
-    });
-    if (MONTH === THIS_MONTH && D.last) {
-      var gap = Math.round((Date.parse(D.today) - Date.parse(D.last)) / 86400000);
-      if (gap >= 3) items.push(['var(--warn-bar)', gap + " kundan beri yozuv yo'q", 'Oxirgi yozuv: ' + dm(D.last), function () { openEntry(null); }]);
-    }
-    if (items.length) {
-      v.appendChild(el('div', 'lbl2', "Hozir e'tibor bering"));
-      items.slice(0, 4).forEach(function (it) {
-        var b = el('button', 'att'); b.type = 'button';
-        var s4 = el('span', 'bar4'); s4.style.background = it[0];
-        var g = el('span', 'gr'); add(g, el('div', 't1', it[1]), el('div', 't2', it[2]));
-        add(b, s4, g, ico('chev', 16)); b.addEventListener('click', it[3]); v.appendChild(b);
+    v.appendChild(seg);
+    var box = el('div', 'entry');
+    var aw = el('div', 'amtw' + (E.type ? ' in' : ''));
+    amtEl = el('input'); amtEl.inputMode = 'decimal'; amtEl.autocomplete = 'off'; amtEl.placeholder = '0'; amtEl.value = keepAmt || ''; amtEl.setAttribute('aria-label', 'Summa');
+    amtEl.addEventListener('input', function () { fmtInput(amtEl); upd(); });
+    var cb = el('button', 'cur', E.usd ? '$' : "so'm"); cb.type = 'button'; cb.setAttribute('aria-label', 'Valyutani almashtirish');
+    cb.addEventListener('click', function () { E.usd = !E.usd; E.acct = null; drawAdd(amtEl.value); });
+    add(aw, el('span', 'sign', E.type ? '+' : '−'), amtEl, cb);
+    box.appendChild(aw);
+    var mt = el('div', 'meta2');
+    var acct = acctSelect(E.usd ? 1 : 0, E.acct); acct.setAttribute('aria-label', 'Hisob');
+    acct.addEventListener('change', function () { E.acct = Number(acct.value); });
+    var day = el('input'); day.type = 'date'; day.max = D ? D.today : tashkentDay(); day.value = E.day || (D ? D.today : tashkentDay()); day.setAttribute('aria-label', 'Sana');
+    day.addEventListener('change', function () { E.day = day.value; });
+    add(mt, acct, day); box.appendChild(mt);
+    // Kategoriya: bitta qator, bosilsa ro'yxat ochiladi
+    var pick = el('button', 'cpick' + (E.cat ? ' sel' : '')); pick.type = 'button';
+    var pic = el('span', 'ic'), ptx = el('span', 't' + (E.cat ? '' : ' ph'), E.cat ? catName(E.cat) : (E.type ? 'Kirim kategoriyasini tanlang' : 'Kategoriyani tanlang'));
+    pic.appendChild(E.cat ? catIcon(catName(E.cat)) : ico('menu', 18));
+    add(pick, pic, ptx, ico('chev', 16));
+    box.appendChild(pick);
+    var list = el('div', 'clist'); list.hidden = true;
+    (D ? liveCats(E.type) : []).forEach(function (c) {
+      var b = el('button'); b.type = 'button'; b.setAttribute('aria-pressed', String(E.cat === c[0]));
+      var ic = el('span', 'ic'); ic.appendChild(catIcon(c[1]));
+      add(b, ic, el('span', null, c[1]));
+      b.addEventListener('click', function () {
+        E.cat = c[0]; list.hidden = true;
+        clear(pic).appendChild(catIcon(c[1])); ptx.textContent = c[1]; ptx.className = 't'; pick.className = 'cpick sel';
+        upd();
       });
-    }
-
-    var lb = el('div', 'lbl2'); add(lb, el('span', 'grow', 'Hisoblar'), link('Boshqarish', openAccounts)); v.appendChild(lb);
-    liveAccts(null).forEach(function (a) {
-      var r = el('button', 'trow two'); r.type = 'button';
-      var n = el('div', 'n'); var dt = el('span', 'dot'); dt.style.background = a[3] === 'karta' ? 'var(--accent)' : a[3] === 'naqd' ? 'var(--ok)' : 'var(--mute2)';
-      add(n, dt, el('span', null, a[1]));
-      add(r, n, el('span', 'tm2' + (a[4] < 0 ? ' neg' : ''), moneyS(a[4], a[2] === 1)));
-      r.addEventListener('click', function () { openAccount(a[0]); });
-      v.appendChild(r);
+      list.appendChild(b);
     });
-
-    var lc = el('div', 'lbl2'); add(lc, el('span', 'grow', "Chiqim bo'limlari"), link('Hammasi', function () { openStats(); })); v.appendChild(lc);
-    catTable(v, usd, 0, 5);
-
-    var lr = el('div', 'lbl2'); add(lr, el('span', 'grow', 'Oxirgi yozuvlar'), link('Hammasi', function () { F = -1; go('list'); })); v.appendChild(lr);
-    var rows = (D.e || []).filter(function (r) { return r[3] === usd; }).slice(0, 5);
-    if (!rows.length) v.appendChild(el('p', 'empty', "Bu oyda yozuv yo'q. «Yozuv qo'shish»ni bosing yoki botga yozing: «taksi 20 ming»."));
-    rows.forEach(function (r) { v.appendChild(entryRow(r)); });
-
-    var ab = el('div', 'abar');
-    add(ab, btn("Yozuv qo'shish", 'pri', function () { openEntry(null); }), btn('AI tahlil', '', openAdvice));
-    v.appendChild(ab);
-    fitKpi();
+    var nb = el('button', 'addc'); nb.type = 'button';
+    var nic = el('span', 'ic'); nic.appendChild(ico('plus', 18)); add(nb, nic, el('span', null, 'Yangi kategoriya'));
+    list.appendChild(nb); box.appendChild(list);
+    pick.addEventListener('click', function () { list.hidden = !list.hidden; });
+    var nc = el('div', 'newcat'); nc.hidden = true;
+    var ncIn = el('input'); ncIn.maxLength = 30; ncIn.placeholder = 'Yangi kategoriya nomi';
+    var ncMsg = el('div', 'msg'); ncMsg.style.minHeight = '0';
+    add(nc, ncIn, btn("Qo'shish", '', function () {
+      if (!ncIn.value.trim()) { ncIn.focus(); return; }
+      var keep = amtEl.value;
+      send({ t: 'cat_add', name: ncIn.value, type: E.type ? 'kirim' : 'chiqim' }, ncMsg, function (r) { if (r.key) E.cat = r.key; drawAdd(keep); }, false, $('pan'));
+    }));
+    nb.addEventListener('click', function () { list.hidden = true; nc.hidden = false; ncIn.focus(); });
+    add(box, nc, ncMsg);
+    var note = el('input', 'note1'); note.maxLength = 80; note.placeholder = 'Izoh (ixtiyoriy)'; note.value = E.note;
+    note.addEventListener('input', function () { E.note = note.value; });
+    box.appendChild(note);
+    v.appendChild(box);
+    var bar = el('div', 'savebar'), inr = el('div', 'in'), msg = el('div', 'msg');
+    var sv = btn('Saqlash', 'pri', function () {
+      var a = parseAmt(amtEl.value);
+      if (!a) { bad(msg, 'Summani yozing'); amtEl.focus(); return; }
+      if (!E.cat) { bad(msg, 'Kategoriyani tanlang'); return; }
+      if (!acct.value) { bad(msg, (E.usd ? 'Dollar' : "So'm") + " hisobi yo'q — Hisobot → Hisoblar"); return; }
+      var catLabel = catName(E.cat), sign = E.type ? '+' : '−', usd = E.usd;
+      send({ t: 'add', type: E.type ? 'kirim' : 'chiqim', amount: a, cat: E.cat, acct: Number(acct.value), note: E.note, day: day.value }, msg, function (r) {
+        E.note = ''; E.cat = '';
+        drawAdd('');
+        var said = 'Saqlandi: ' + sign + full(Math.round(a * (usd ? 100 : 1)), usd) + (usd ? ' $' : " so'm") + ' · ' + catLabel;
+        var m2 = $('pan').querySelector('.savebar .msg'); if (m2) { m2.className = 'msg'; m2.style.color = 'var(--ok)'; m2.textContent = said + ((r.warn || []).length ? ' · ' + r.warn.join(' ') : ''); }
+        render();
+        setTimeout(function () { if (amtEl) amtEl.focus(); }, 50);
+      }, true, $('pan'));
+    });
+    function upd() {
+      var a = parseAmt(amtEl.value);
+      sv.textContent = a && E.cat ? 'Saqlash · ' + amtEl.value + (E.usd ? ' $' : " so'm") + ' · ' + catName(E.cat) : a ? 'Kategoriyani tanlang' : 'Saqlash';
+      msg.textContent = ''; msg.style.color = '';
+    }
+    add(inr, sv, msg); bar.appendChild(inr); v.appendChild(bar);
+    upd();
   }
-  function link(text, fn) { var a = el('a', null, text); a.href = '#'; a.addEventListener('click', function (e) { e.preventDefault(); fn(); }); return a; }
-  function btn(text, cls, fn) { var b = el('button', 'btn' + (cls ? ' ' + cls : ''), text); b.type = 'button'; b.addEventListener('click', fn); return b; }
-  function catTable(box, usd, type, limit) {
+
+  // ============ 1. ASOSIY: xarajatlar grafik va raqamda ============
+  var NS = 'http://www.w3.org/2000/svg';
+  function svg(tag, at) { var e = document.createElementNS(NS, tag); for (var k in at) e.setAttribute(k, at[k]); return e; }
+  function daysIn(m) { return new Date(Date.UTC(Number(m.slice(0, 4)), Number(m.slice(5, 7)), 0)).getUTCDate(); }
+  function dailyChart(usd) {
+    var n = daysIn(MONTH), by = new Array(n + 1).fill(0), max = 0;
+    (D.e || []).forEach(function (r) { if (r[3] === usd && r[1] === 0 && !isDebtCat(r[4])) by[r[6]] += num(r[2]); });
+    for (var i = 1; i <= n; i++) max = Math.max(max, by[i]);
+    var w = 320, h = 96, gap = 2, bw = (w - gap * (n - 1)) / n;
+    var tday = MONTH === THIS_MONTH ? Number(D.today.slice(8, 10)) : 0;
+    var s = svg('svg', { viewBox: '0 0 ' + w + ' ' + (h + 2), role: 'img', 'aria-label': 'Kunlar bo\'yicha xarajat' });
+    s.appendChild(svg('line', { x1: 0, y1: h + 1, x2: w, y2: h + 1, stroke: 'var(--line)', 'stroke-width': 1 }));
+    for (var d = 1; d <= n; d++) {
+      var bh = max ? Math.max(by[d] ? 3 : 0, Math.round(by[d] / max * h)) : 0;
+      var x = (d - 1) * (bw + gap);
+      var r = svg('rect', { x: x.toFixed(1), y: h - bh, width: bw.toFixed(1), height: bh || 0, rx: 2, fill: 'var(--accent)', opacity: d === tday ? 1 : (d > tday && tday ? 0.15 : 0.45) });
+      s.appendChild(r);
+      // Butun ustun balandligida bosiladigan joy (barmoq bilan tegish oson bo'lsin)
+      var hit = svg('rect', { x: (x - gap / 2).toFixed(1), y: 0, width: (bw + gap).toFixed(1), height: h + 2, fill: 'transparent', style: 'cursor:pointer' });
+      var t = svg('title', {}); t.textContent = d + '-kun: ' + full(by[d], usd); hit.appendChild(t);
+      (function (day) { hit.addEventListener('click', function () { openDay(day); }); })(d);
+      s.appendChild(hit);
+    }
+    var box = el('div', 'chart'); box.appendChild(el('div', 'cap', "Kunlar bo'yicha · kunni bosing"));
+    box.appendChild(s);
+    var ax = el('div', 'ax'); ['1', '10', '20', String(n)].forEach(function (t) { ax.appendChild(el('span', null, t)); }); box.appendChild(ax);
+    return box;
+  }
+  function catBars(box, usd, type, limit) {
     var by = {}, total = 0, bud = {};
     (D.e || []).forEach(function (r) { if (r[3] !== usd || r[1] !== type || isDebtCat(r[4])) return; by[r[4]] = (by[r[4]] || 0) + num(r[2]); total += num(r[2]); });
     (D.b || []).forEach(function (b) { if (b[1] === usd && b[0]) bud[b[0]] = b[2]; });
     var list = Object.keys(by).sort(function (a, b) { return by[b] - by[a]; });
-    if (!list.length) { box.appendChild(el('p', 'empty', type ? "Bu oyda kirim yo'q." : "Bu oyda chiqim yo'q.")); return; }
-    box.appendChild(add(el('div', 'trow money h'), el('span', null, "Bo'lim"), el('span', 'tm2', 'Summa'), el('span', 'tm2', '%')));
-    if (limit && list.length > limit) {
-      var rest = list.slice(limit - 1).reduce(function (s, k) { return s + by[k]; }, 0);
-      list = list.slice(0, limit - 1); by.__rest = rest; list.push('__rest');
-    }
-    list.forEach(function (k) {
-      var row = el('div', 'trow money'), n = el('div', 'n');
-      var dot = el('span', 'dot'); dot.style.background = type ? 'var(--ok)' : 'var(--accent)';
-      var nm = el('div'); nm.style.minWidth = '0'; nm.style.flex = '1';
-      var t = el('span', null, k === '__rest' ? 'Qolganlari' : catName(k)); t.style.display = 'block';
-      var pct = total ? Math.round(by[k] * 100 / total) : 0;
-      var lim = bud[k], bar = el('div', 'prog'), fill = el('i');
-      var w = lim ? Math.min(100, by[k] * 100 / lim) : pct;
-      fill.style.width = Math.max(2, w) + '%';
+    if (!list.length) { box.appendChild(el('p', 'empty', type ? "Bu oyda kirim yo'q." : "Bu oyda xarajat yo'q. «+» ni bosib yozing.")); return; }
+    var top = by[list[0]];
+    (limit ? list.slice(0, limit) : list).forEach(function (k) {
+      var row = el('button', 'hb'), nm = el('div', 'nm'), ic = el('span', 'ic'); row.type = 'button';
+      (function (key) { row.addEventListener('click', function () { openCatEntries(key, type); }); })(k);
+      ic.appendChild(catIcon(catName(k))); add(nm, ic, el('span', null, catName(k)));
+      var am = el('div', 'am', full(by[k], usd)), pct = total ? Math.round(by[k] * 100 / total) : 0;
+      var pc = el('div', 'pc', bud[k] ? pct + '% · chegara ' + sm(bud[k], usd === 1) : pct + '%');
+      var bar = el('div', 'prog'), fill = el('i');
+      var lim = bud[k];
+      fill.style.width = Math.max(2, lim ? Math.min(100, by[k] * 100 / lim) : by[k] * 100 / top) + '%';
       fill.style.background = lim ? (by[k] >= lim ? 'var(--danger)' : by[k] >= lim * 0.8 ? 'var(--warn-bar)' : 'var(--ok)') : (type ? 'var(--ok)' : 'var(--accent)');
-      bar.appendChild(fill); add(nm, t, bar); add(n, dot, nm);
-      add(row, n, el('span', 'tm2', full(by[k], usd)), el('span', 'tm2', pct + '%'));
-      box.appendChild(row);
+      bar.appendChild(fill); add(row, nm, am, bar, pc); box.appendChild(row);
     });
+    if (limit && list.length > limit) box.appendChild(setRow('Hamma kategoriyalar', list.length + ' ta', function () { go('rep'); }));
   }
+  function renderHome() {
+    // Asosiy ekran so'mda; dollarda yozuv bo'lsa - alohida kichik qatorda
+    var v = clear($('v-home')), usd = 0, u = false;
+    var s = monthSums(usd), bal = liveAccts(usd).reduce(function (t, a) { return t + num(a[4]); }, 0);
+    var tday = Number(D.today.slice(8, 10)), todayOut = (D.e || []).reduce(function (t, r) { return t + (MONTH === THIS_MONTH && r[6] === tday && r[3] === usd && r[1] === 0 && !isDebtCat(r[4]) ? num(r[2]) : 0); }, 0);
+    var su = monthSums(1), balU = liveAccts(1).reduce(function (t, a) { return t + num(a[4]); }, 0);
+    var hasU = !!(su[0] || su[1] || balU);
+    // Ustunlar: Xarajat | Kirim | Hisobda; qatorlar: so'm, $ (dollarda yozuv yoki pul bo'lsa)
+    var hero = el('div', 'hero');
+    hero.appendChild(el('div', 'k', monthName(MONTH) + (MONTH === THIS_MONTH ? ' · bugun ' + full(todayOut, false) + " so'm" : '')));
+    var tb = el('div', 'htab');
+    add(tb, el('span', 'hh', ''), el('span', 'hh r', 'Xarajat'), el('span', 'hh r', 'Kirim'), el('span', 'hh r', 'Hisobda'));
+    [[0, "so'm", s, bal]].concat(hasU ? [[1, '$', su, balU]] : []).forEach(function (row) {
+      var uu = row[0] === 1;
+      add(tb, el('span', 'cu', row[1]), el('span', 'vx r', full(row[2][1], uu)), el('span', 'vk r', full(row[2][0], uu)), el('span', 'vb r' + (row[3] < 0 ? ' neg' : ''), sm(row[3], uu).replace('$', '')));
+    });
+    hero.appendChild(tb);
+    v.appendChild(hero);
+    v.appendChild(dailyChart(usd));
+    var lc = el('div', 'lbl2'); add(lc, el('span', 'grow', 'Kategoriyalar'), link('Hisobot', function () { go('rep'); })); v.appendChild(lc);
+    catBars(v, usd, 0, 6);
+    var lr = el('div', 'lbl2'); add(lr, el('span', 'grow', 'Oxirgi yozuvlar'), link('Hammasi', function () { F = -1; go('list'); })); v.appendChild(lr);
+    var rows = (D.e || []).slice(0, 5);
+    if (!rows.length) v.appendChild(el('p', 'empty', "Yozuv yo'q."));
+    rows.forEach(function (r) { v.appendChild(entryRow(r)); });
+  }
+
   function entryRow(r) {
     var row = el('button', 'row'); row.type = 'button';
     var usd = r[3] === 1, t = r[1];
@@ -389,29 +578,50 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
     var src = r[8] === 'ovoz' ? ' · ovoz' : r[8] === 'rasm' ? ' · chek' : '';
     add(g, el('div', 't1', title), el('div', 't2', sub + (r[7] ? ' · ' + r[7] : '') + src));
     var sign = t === 1 ? '+' : t === 0 ? '−' : '';
-    add(row, g, el('div', 'v' + (t === 1 ? ' pos' : ''), sign + full(num(r[2]), usd)));
+    add(row, g, el('div', 'v' + (t === 1 ? ' pos' : ''), sign + (usd ? '$' : '') + full(num(r[2]), usd)));
     row.addEventListener('click', function () { openEntry(r[0]); });
     return row;
   }
 
-  // ---------- Yozuvlar ----------
+  // ============ 2. YOZUVLAR ============
+  function monthBar(onChange) {
+    var mb = el('div', 'month');
+    var p = el('button'); p.type = 'button'; p.setAttribute('aria-label', 'Oldingi oy'); p.appendChild(ico('back', 18));
+    var n = el('button'); n.type = 'button'; n.setAttribute('aria-label', 'Keyingi oy'); n.appendChild(ico('chev', 18)); n.disabled = MONTH >= THIS_MONTH;
+    p.addEventListener('click', function () { MONTH = shiftMonth(MONTH, -1); showCached(); load(true); });
+    n.addEventListener('click', function () { if (MONTH < THIS_MONTH) { MONTH = shiftMonth(MONTH, 1); showCached(); load(true); } });
+    add(mb, p, el('span', 'm', monthName(MONTH)), n);
+    return mb;
+  }
+  function curSeg() {
+    var hasUsd = A().some(function (a) { return a[2] === 1 && !a[5]; }) || (D.e || []).some(function (r) { return r[3] === 1; });
+    if (!hasUsd) { CUR = 0; return null; }
+    var seg = el('div', 'seg');
+    [[0, "So'm"], [1, 'Dollar']].forEach(function (o) {
+      var b = el('button', null, o[1]); b.type = 'button'; b.setAttribute('aria-selected', String(CUR === o[0]));
+      b.addEventListener('click', function () { CUR = o[0]; render(); }); seg.appendChild(b);
+    });
+    return seg;
+  }
   function renderList() {
     var v = clear($('v-list')), usd = CUR;
-    var seg = el('div', 'seg'); seg.setAttribute('role', 'tablist');
-    [[-1, 'Hammasi'], [0, 'Chiqim'], [1, 'Kirim'], [2, "O'tkazma"]].forEach(function (o) {
-      var b = el('button', null, o[1]); b.type = 'button'; b.setAttribute('role', 'tab'); b.setAttribute('aria-selected', String(F === o[0]));
+    var bk = el('button', 'backb'); bk.type = 'button'; add(bk, ico('back', 18), document.createTextNode('Asosiy')); bk.addEventListener('click', function () { go('home'); });
+    add(v, bk, monthBar(), curSeg());
+    var seg = el('div', 'seg');
+    [[-1, 'Hammasi'], [0, 'Chiqim'], [1, 'Kirim']].forEach(function (o) {
+      var b = el('button', null, o[1]); b.type = 'button'; b.setAttribute('aria-selected', String(F === o[0]));
       b.addEventListener('click', function () { F = o[0]; renderList(); }); seg.appendChild(b);
     });
     v.appendChild(seg);
-    var sw = el('div', 'search'), si = el('input'); si.type = 'search'; si.placeholder = "Qidirish: izoh yoki bo'lim"; si.value = Q;
-    si.addEventListener('input', function () { Q = si.value; drawRows(); }); sw.appendChild(si); v.appendChild(sw);
+    var sw = el('div', 'search'), si = el('input'); si.type = 'search'; si.placeholder = 'Qidirish: izoh yoki kategoriya'; si.value = Q;
+    si.addEventListener('input', function () { Q = si.value; draw(); }); sw.appendChild(si); v.appendChild(sw);
     var box = el('div'); v.appendChild(box);
-    function drawRows() {
+    function draw() {
       clear(box);
       var q = Q.trim().toLowerCase();
       var f = (D.e || []).filter(function (r) {
         if (r[3] !== usd) return false;
-        if (F === 2 ? (r[1] !== 2 && r[1] !== 3) : (F !== -1 && r[1] !== F)) return false;
+        if (F !== -1 && r[1] !== F) return false;
         return !q || (String(r[5]) + ' ' + catName(r[4]) + ' ' + acctName(r[9])).toLowerCase().indexOf(q) >= 0;
       });
       if (!f.length) { box.appendChild(el('p', 'empty', q ? 'Topilmadi.' : "Yozuv yo'q.")); return; }
@@ -431,132 +641,104 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
       });
       closeDay();
     }
-    drawRows();
-    var ab = el('div', 'abar'); ab.style.gridTemplateColumns = '1fr';
-    ab.appendChild(btn("Yozuv qo'shish", 'pri', function () { openEntry(null); })); v.appendChild(ab);
+    draw();
   }
 
-  // ---------- Reja: byudjet va maqsadlar ----------
-  function renderPlan() {
-    var v = clear($('v-plan')), usd = CUR, unit = usd ? 'dollar' : "so'm";
-    var lb = el('div', 'lbl2'); add(lb, el('span', 'grow', 'Byudjet · ' + monthName(MONTH)), link("+ Qo'shish", function () { openBudget(null); })); v.appendChild(lb);
-    var bs = (D.b || []).filter(function (b) { return b[1] === usd; });
-    if (!bs.length) v.appendChild(el('p', 'empty', "Byudjet qo'yilmagan. Masalan: «Kafe va restoran» — oyiga 800 000 so'm. 80% ga yetganda bot ogohlantiradi."));
-    bs.forEach(function (b) {
-      var r = el('button', 'trow two'); r.type = 'button';
-      var n = el('div'); n.style.minWidth = '0';
-      var p = b[2] ? b[3] / b[2] : 0;
-      add(n, el('div', null, b[0] ? catName(b[0]) : 'Jami chiqim'));
-      var bar = el('div', 'prog'), fill = el('i'); fill.style.width = Math.max(2, Math.min(100, p * 100)) + '%';
-      fill.style.background = p >= 1 ? 'var(--danger)' : p >= 0.8 ? 'var(--warn-bar)' : 'var(--ok)'; bar.appendChild(fill); n.appendChild(bar);
-      var left = b[2] - b[3];
-      var val = el('div', 'tm2'); val.style.paddingLeft = '12px';
-      add(val, el('div', null, full(b[3], usd) + ' / ' + full(b[2], usd)), el('div', left < 0 ? 'neg' : 'wrn', left < 0 ? 'oshdi ' + full(-left, usd) : 'qoldi ' + full(left, usd)));
-      val.lastChild.style.fontSize = '12px'; if (left >= 0 && p < 0.8) val.lastChild.className = '';
-      add(r, n, val); r.addEventListener('click', function () { openBudget(b); }); v.appendChild(r);
+  // ============ 3. HISOBOT ============
+  function monthSums(usd) {
+    var inS = 0, outS = 0, by = {};
+    (D.e || []).forEach(function (r) {
+      if (r[3] !== usd || isDebtCat(r[4])) return;
+      if (r[1] === 1) inS += num(r[2]); else if (r[1] === 0) { outS += num(r[2]); by[r[4]] = (by[r[4]] || 0) + num(r[2]); }
     });
-
-    var lg = el('div', 'lbl2'); add(lg, el('span', 'grow', 'Maqsadlar'), link("+ Qo'shish", function () { openGoalNew(); })); v.appendChild(lg);
-    var gs = (D.g || []).filter(Array.isArray);
-    if (!gs.length) v.appendChild(el('p', 'empty', "Maqsad yo'q. Masalan: «Mashina» — 50 mln. Botga «mashina uchun 2 mln yig'dim» deb yozsangiz shu yerga qo'shiladi."));
-    gs.forEach(function (g) {
-      var r = el('button', 'row'); r.type = 'button';
-      var p = g[2] ? Math.min(1, g[4] / g[2]) : 0;
-      add(r, el('div', 'av', g[6] ? 'OK' : Math.round(p * 100) + '%'));
-      var gr = el('div', 'gr'); add(gr, el('div', 't1', g[1]), el('div', 't2', sm(g[4], g[3] === 1) + (g[2] ? ' / ' + sm(g[2], g[3] === 1) : " yig'ildi") + (g[3] === 1 ? '' : " so'm") + (g[5] ? ' · ' + dm(g[5]) + ' gacha' : '') + (g[6] ? ' · bajarildi' : '')));
-      var bar = el('div', 'prog'), fill = el('i'); fill.style.width = Math.max(2, p * 100) + '%'; if (g[6]) fill.style.background = 'var(--ok)'; bar.appendChild(fill); gr.appendChild(bar);
-      add(r, gr, ico('chev', 16)); r.addEventListener('click', function () { openGoal(g[0]); }); v.appendChild(r);
-    });
-    void unit;
+    return [inS, outS, by];
   }
-
-  // ---------- Qarzlar ----------
-  function renderDebt() {
-    var v = clear($('v-debt'));
-    var ds = (D.d || []).filter(Array.isArray);
-    var open = ds.filter(function (d) { return !d[9]; });
-    var sum = [[0, 0], [0, 0]]; // [berdim, oldim] x [so'm, $]
-    open.forEach(function (d) { sum[d[2] ? 0 : 1][d[4]] += num(d[5]); });
-    var kpi = el('div', 'kpi'); kpi.style.gridTemplateColumns = 'repeat(2,minmax(0,1fr))';
-    add(kpi, kpiBtn('dIn', sum[0][CUR], CUR, 'sizga qaytariladi', function () { DF = 1; renderDebt(); }),
-      kpiBtn('dOut', sum[1][CUR], CUR, 'siz qaytarasiz', function () { DF = 0; renderDebt(); }));
+  function kpiBtn(label, minor, usd, fn) {
+    var b = el('button'); b.type = 'button';
+    var v = el('b'); var p = short(minor, usd); v.textContent = p[0]; if (p[1]) v.appendChild(el('small', null, p[1])); if (minor < 0) v.className = 'neg';
+    add(b, v, el('span', null, label)); if (fn) b.addEventListener('click', fn); return b;
+  }
+  function fitKpi() {
+    var bs = Array.prototype.slice.call(document.querySelectorAll('.kpi b'));
+    if (!bs.length || !bs[0].clientWidth) return;
+    var sizes = ['', '28px', '24px'];
+    for (var i = 0; i < sizes.length; i++) { bs.forEach(function (b) { b.style.fontSize = sizes[i]; }); if (!bs.some(function (b) { return b.scrollWidth > b.clientWidth; })) return; }
+  }
+  function monthsChart(usd) {
+    var mo = (D.mo || []).filter(Array.isArray).slice().reverse(), max = 0;
+    mo.forEach(function (m) { max = Math.max(max, num(m[usd ? 3 : 1]), num(m[usd ? 4 : 2])); });
+    var w = 320, h = 110, gw = w / Math.max(1, mo.length), bw = Math.min(18, gw / 3);
+    var s = svg('svg', { viewBox: '0 0 ' + w + ' ' + (h + 2), role: 'img', 'aria-label': 'Oylar bo\'yicha kirim va chiqim' });
+    s.appendChild(svg('line', { x1: 0, y1: h + 1, x2: w, y2: h + 1, stroke: 'var(--line)', 'stroke-width': 1 }));
+    mo.forEach(function (m, i) {
+      var cx = i * gw + gw / 2;
+      [[num(m[usd ? 3 : 1]), 'var(--ok)', -bw - 1], [num(m[usd ? 4 : 2]), 'var(--accent)', 1]].forEach(function (b) {
+        var bh = max ? Math.max(b[0] ? 3 : 0, Math.round(b[0] / max * h)) : 0;
+        s.appendChild(svg('rect', { x: (cx + b[2]).toFixed(1), y: h - bh, width: bw, height: bh, rx: 2, fill: b[1] }));
+      });
+      var hit = svg('rect', { x: (i * gw).toFixed(1), y: 0, width: gw.toFixed(1), height: h + 2, fill: 'transparent', style: 'cursor:pointer' });
+      var tt = svg('title', {}); tt.textContent = monthName(String(m[0])) + ': kirim ' + full(num(m[usd ? 3 : 1]), usd) + ', chiqim ' + full(num(m[usd ? 4 : 2]), usd); hit.appendChild(tt);
+      (function (mm) { hit.addEventListener('click', function () { if (mm !== MONTH) { MONTH = mm; showCached(); load(true); } window.scrollTo(0, 0); }); })(String(m[0]));
+      s.appendChild(hit);
+    });
+    var box = el('div', 'chart');
+    var cap = el('div', 'cap'); cap.appendChild(document.createTextNode('Oxirgi 6 oy (oyni bosing) · '));
+    var g1 = el('span', 'pos', 'kirim'); var g2 = el('span', null, ' · '); var g3 = el('span', null, 'chiqim'); g3.style.color = 'var(--accent)';
+    add(cap, g1, g2, g3); box.appendChild(cap); box.appendChild(s);
+    var ax = el('div', 'ax'); mo.forEach(function (m) { ax.appendChild(el('span', null, MON[Number(String(m[0]).slice(5, 7)) - 1].slice(0, 3))); }); box.appendChild(ax);
+    return box;
+  }
+  function renderRep() {
+    var v = clear($('v-rep')), usd = CUR, u = usd === 1;
+    add(v, monthBar(), curSeg());
+    var s = monthSums(usd);
+    var kpi = el('div', 'kpi');
+    add(kpi, kpiBtn('kirim', s[0], u, function () { F = 1; go('list'); }), kpiBtn('chiqim', s[1], u, function () { F = 0; go('list'); }), kpiBtn('farq', s[0] - s[1], u));
     v.appendChild(kpi);
-    var seg = el('div', 'seg');
-    [[1, 'Menga qarz'], [0, 'Men qarzman'], [2, 'Yopilgan']].forEach(function (o) {
-      var b = el('button', null, o[1]); b.type = 'button'; b.setAttribute('aria-selected', String(DF === o[0]));
-      b.addEventListener('click', function () { DF = o[0]; renderDebt(); }); seg.appendChild(b);
+    v.appendChild(el('div', 'lbl2', 'Xarajat kategoriyalari · ' + full(s[1], u)));
+    catBars(v, usd, 0, 0);
+    v.appendChild(el('div', 'lbl2', 'Kirim kategoriyalari · ' + full(s[0], u)));
+    catBars(v, usd, 1, 0);
+    v.appendChild(monthsChart(usd));
+    v.appendChild(add(el('div', 'trow mon3 h'), el('span', null, 'Oy'), el('span', 'tm2', 'Kirim'), el('span', 'tm2', 'Chiqim')));
+    (D.mo || []).forEach(function (m) {
+      if (!Array.isArray(m)) return;
+      v.appendChild(add(el('div', 'trow mon3'), add(el('div', 'n'), el('span', null, monthName(String(m[0])))), el('span', 'tm2 pos', full(num(m[usd ? 3 : 1]), u)), el('span', 'tm2', full(num(m[usd ? 4 : 2]), u))));
     });
-    v.appendChild(seg);
-    var list = ds.filter(function (d) { return DF === 2 ? d[9] : !d[9] && d[2] === DF; });
-    if (!list.length) v.appendChild(el('p', 'empty', DF === 2 ? "Yopilgan qarz yo'q." : "Qarz yo'q. Botga yozing: «Akmalga 1 mln qarz berdim, 15-noyabrgacha»."));
-    list.forEach(function (d) {
-      var r = el('button', 'row'); r.type = 'button';
-      add(r, el('div', 'av', initials(d[1])));
-      var late = !d[9] && d[6] && d[6] < D.today;
-      var gr = el('div', 'gr'); add(gr, el('div', 't1', d[1]), el('div', 't2' + (late ? ' neg' : ''), (d[6] ? (late ? "muddati o'tgan · " : 'muddat ') + dm(d[6]) : 'muddatsiz') + (d[7] ? ' · ' + d[7] : '')));
-      var val = el('div', 'v', full(d[9] ? d[3] : d[5], d[4] === 1));
-      if (!d[9] && d[5] !== d[3]) val.appendChild(el('small', null, 'jami ' + full(d[3], d[4] === 1)));
-      add(r, gr, val); r.addEventListener('click', function () { openDebt(d[0]); }); v.appendChild(r);
-    });
-    var ab = el('div', 'abar'); ab.style.gridTemplateColumns = '1fr';
-    ab.appendChild(btn('Qarz yozish', 'pri', function () { openDebtNew(); })); v.appendChild(ab);
+    v.appendChild(el('div', 'lbl2', 'Boshqaruv'));
+    var openDebts = (D.d || []).filter(function (d) { return !d[9]; }).length;
+    add(v, setRow('Qarzlar', openDebts ? openDebts + ' ta ochiq' : '', openDebts_),
+      setRow('Byudjet va maqsadlar', '', openPlan),
+      setRow('Hisoblar', liveAccts(null).length + ' ta', openAccounts),
+      setRow('Kategoriyalar', "qo'shish, o'zgartirish", openCats),
+      setRow('AI tahlil', '', openAdvice),
+      setRow('Zakot kalkulyatori', '', openZakat),
+      setRow('Moliyaviy savodxonlik', '6 dars', openLessons));
     fitKpi();
   }
 
-  // ---------- Ko'proq ----------
-  function setRow(k, val, fn) { var b = el('button', 'set'); b.type = 'button'; add(b, el('span', 'k', k), val ? el('span', 'val', val) : null, ico('chev', 16)); b.addEventListener('click', fn); return b; }
-  function renderMore() {
-    var v = clear($('v-more'));
-    v.appendChild(el('div', 'lbl2', 'Boshqaruv'));
-    add(v, setRow('Hisoblar', liveAccts(null).length + ' ta', openAccounts),
-      setRow('AI tahlil', 'shu oy', openAdvice),
-      setRow('Zakot kalkulyatori', '', openZakat),
-      setRow('Statistika', '6 oy', openStats),
-      setRow('Moliyaviy savodxonlik', '6 dars', openLessons));
-    v.appendChild(el('div', 'lbl2', 'Qanday yoziladi'));
-    [["Botga oddiy yozing: ", 'taksi 20 ming', ', ', 'oylik keldi 5 mln kartaga', '.'],
-     ["Hisoblar orasida: ", 'kartadan 500 ming naqd yechdim', '.'],
-     ["Qarz: ", 'Akmalga 1 mln qarz berdim, 15-noyabrgacha', ' va ', 'Akmal 300 ming qaytardi', '.'],
-     ["Bo'lishish: ", "restoranda 600 ming to'ladim, 3 kishi edik, Ali va Vali qaytaradi", '.'],
-     ["Maqsad: ", "mashina uchun 2 mln yig'dim", '.'],
-     ["Chekdagi QR kod: telefon kamerasi bilan skanerlang va chiqqan ", 'ofd.soliq.uz/...', " havolasini botga yuboring."]].forEach(function (p) {
-      var n = el('p', 'note'); p.forEach(function (x, i) { n.appendChild(i % 2 ? el('code', null, x) : document.createTextNode(x)); }); v.appendChild(n);
-    });
-    v.appendChild(el('p', 'note', "Ovozli xabar yoki chek rasmini yuborsangiz ham bo'ladi. Bot nima tushunganini ko'rsatadi — «Saqlash»ni bosasiz. Xato bo'lsa, yozuvni shu yerda bosib tuzating yoki o'chiring."));
-    v.appendChild(el('div', 'lbl2', "Ma'lumot"));
-    add(v, setRow('Oxirgi yangilanish', D.now ? new Date((num(D.now) + 5 * 3600) * 1000).toISOString().slice(11, 16) : '—', function () { load(true); }));
-  }
-
-  // ---------- Varaqlar (forma ekranlari) ----------
-  function sheet(title, build) {
-    SHEET = title;
+  // ============ Varaqlar (ichki ekranlar), ketma-ket ochiladi ============
+  function sheet(title, build) { STACK.push([title, build]); drawSheet(); }
+  function drawSheet() {
+    var top = STACK[STACK.length - 1];
     var v = clear($('v-sheet'));
     var bk = el('button', 'backb'); bk.type = 'button'; add(bk, ico('back', 18), document.createTextNode('Orqaga')); bk.addEventListener('click', closeSheet);
-    v.appendChild(bk);
-    var h = el('div', 'lbl2', title); v.appendChild(h);
-    build(v);
-    ['home', 'list', 'plan', 'debt', 'more'].forEach(function (t) { $('v-' + t).hidden = true; });
-    $('monthBar').hidden = true; $('curSeg').hidden = true; $('tabs').hidden = true; v.hidden = false;
+    add(v, bk, el('div', 'lbl2', top[0]));
+    top[1](v);
+    ['home', 'list', 'rep'].forEach(function (t) { $('v-' + t).hidden = true; });
+    $('tabs').hidden = true; $('fab').hidden = true; v.hidden = false;
     if (tg && tg.BackButton) { try { tg.BackButton.show(); } catch (e) {} }
     window.scrollTo(0, 0);
   }
   function closeSheet() {
-    SHEET = null; $('v-sheet').hidden = true; $('tabs').hidden = false;
+    STACK.pop();
+    if (STACK.length) { drawSheet(); return; }
+    $('v-sheet').hidden = true; $('tabs').hidden = false; $('fab').hidden = false;
     if (tg && tg.BackButton) { try { tg.BackButton.hide(); } catch (e) {} }
     go(TAB);
   }
-  if (tg && tg.BackButton && tg.BackButton.onClick) tg.BackButton.onClick(function () { if (SHEET) closeSheet(); });
+  if (tg && tg.BackButton && tg.BackButton.onClick) tg.BackButton.onClick(function () { if (!$('ov').hidden) closeAdd(); else if (STACK.length) closeSheet(); });
   function field(label, input, hint) { var l = el('label', 'fld'); add(l, el('span', null, label), input, hint ? el('span', 'hint', hint) : null); return l; }
-  function amtInput(val, usd) {
-    var i = el('input', 'big'); i.inputMode = 'decimal'; i.autocomplete = 'off'; i.placeholder = usd ? '0,00' : '0';
-    if (val) { i.value = usd ? String(val / 100).replace('.', ',') : String(val); fmtInput(i); }
-    i.addEventListener('input', function () { fmtInput(i); }); return i;
-  }
-  function acctSelect(usd, sel, exclude) {
-    var s = el('select');
-    liveAccts(usd).forEach(function (a) { if (a[0] === exclude) return; var o = el('option', null, a[1] + ' · ' + moneyS(a[4], a[2] === 1)); o.value = a[0]; if (a[0] === sel) o.selected = true; s.appendChild(o); });
-    return s;
-  }
   function chips(list, sel, onPick) {
     var w = el('div', 'chips'), cur = sel;
     list.forEach(function (c) {
@@ -568,83 +750,102 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
   }
   function formBar(primary, onPrimary, secondary, onSecondary, plain) {
     var f = el('div', 'fbar' + (secondary ? '' : ' one'));
-    var p = btn(primary, plain ? '' : 'pri', onPrimary); f.appendChild(p);
-    if (secondary) f.appendChild(btn(secondary, secondary === "O'chirish" || secondary === 'Yashirish' ? 'danger' : '', onSecondary));
+    f.appendChild(btn(primary, plain ? '' : 'pri', onPrimary));
+    if (secondary) f.appendChild(btn(secondary, /O'chirish|Yashirish/.test(secondary) ? 'danger' : '', onSecondary));
     return f;
   }
   function msgBox() { return el('div', 'msg'); }
-
-  // Yozuv: yangi (id = null) yoki tahrirlash
-  function openEntry(id) {
-    var r = id ? (D.e || []).find(function (x) { return x[0] === id; }) : null;
-    if (id && !r) return;
-    var editable = !r || ((r[1] === 0 || r[1] === 1) && !isDebtCat(r[4]));
-    sheet(r ? 'Yozuv' : "Yangi yozuv", function (v) {
-      var type = r ? r[1] : 0, usd = r ? r[3] === 1 : CUR === 1, cat = r ? r[4] : 'oziq';
-      var form = el('div', 'form'), msg = msgBox();
-      var segW = el('div', 'seg'); segW.style.margin = '0 -20px';
-      var amt = amtInput(r ? r[2] : 0, usd);
-      var acct = acctSelect(usd ? 1 : 0, r ? r[9] : null);
-      var to = acctSelect(usd ? 1 : 0, r ? r[10] : null);
-      var note = el('input'); note.maxLength = 80; note.placeholder = 'masalan: taksi'; note.value = r ? r[5] : '';
-      var day = el('input'); day.type = 'date'; day.max = D.today;
-      day.value = r ? MONTH + '-' + String(r[6]).padStart(2, '0') : (MONTH === THIS_MONTH ? D.today : MONTH + '-01');
-      var catBox = el('div');
-      var toF = field('Qayerga', to);
-      function drawCats() {
-        clear(catBox);
-        if (type === 2) { toF.hidden = false; return; }
-        toF.hidden = true;
-        var list = type === 1 ? CATS_IN : CATS_OUT;
-        if (!list.some(function (c) { return c[0] === cat; })) cat = list[0][0];
-        catBox.appendChild(field("Bo'lim", chips(list, cat, function (k) { cat = k; })));
-      }
-      if (!r) {
-        [[0, 'Chiqim'], [1, 'Kirim'], [2, "O'tkazma"]].forEach(function (o) {
-          var b = el('button', null, o[1]); b.type = 'button'; b.setAttribute('aria-selected', String(type === o[0]));
-          b.addEventListener('click', function () { type = o[0]; segW.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-selected', String(x === b)); }); drawCats(); });
-          segW.appendChild(b);
-        });
-        form.appendChild(segW);
-        // Valyuta hisobga qarab: boshqa valyutadagi hisob tanlansa, ro'yxat yangilanadi
-        var curSel = el('select'); [[0, "So'm"], [1, 'Dollar']].forEach(function (c) { var o = el('option', null, c[1]); o.value = c[0]; if ((usd ? 1 : 0) === c[0]) o.selected = true; curSel.appendChild(o); });
-        curSel.addEventListener('change', function () {
-          usd = curSel.value === '1'; amt.placeholder = usd ? '0,00' : '0';
-          var na = acctSelect(usd ? 1 : 0, null), nt = acctSelect(usd ? 1 : 0, null);
-          acct.replaceWith(na); acct = na; to.replaceWith(nt); to = nt;
-        });
-        var pr = el('div', 'pair'); add(pr, field('Summa', amt), field('Valyuta', curSel));
-        pr.style.gridTemplateColumns = '2fr 1fr'; form.appendChild(pr);
-      } else {
-        form.appendChild(field('Summa' + (usd ? ', dollar' : ", so'm"), amt));
-        if (!editable) amt.disabled = true;
-      }
-      form.appendChild(field(r && r[1] === 2 ? 'Qayerdan' : 'Hisob', acct));
-      form.appendChild(toF);
-      form.appendChild(catBox);
-      form.appendChild(field('Izoh', note));
-      form.appendChild(field('Sana', day));
-      if (r && !editable) form.appendChild(el('p', 'hint', r[1] === 2 ? "O'tkazmaning summasini o'zgartirib bo'lmaydi — o'chirib, qaytadan yozing." : r[1] === 3 ? "Maqsad yozuvi — o'chirsangiz pul hisobga qaytadi." : "Qarz yozuvi — qarzni «Qarzlar» bo'limida boshqaring."));
-      if (r) { toF.hidden = r[1] !== 2; if (editable) drawCats(); } else drawCats();
-      form.appendChild(msg);
-      var save = function () {
-        var a = parseAmt(amt.value);
-        if (!a) { msg.className = 'msg bad'; msg.textContent = 'Summani yozing'; amt.focus(); return; }
-        if (r) send({ t: 'edit', id: r[0], amount: a, cat: cat, note: note.value, acct: Number(acct.value), day: day.value }, msg, true);
-        else if (type === 2) {
-          if (!to.value || to.value === acct.value) { msg.className = 'msg bad'; msg.textContent = 'Boshqa hisobni tanlang'; return; }
-          send({ t: 'add', type: 'otkazma', amount: a, acct: Number(acct.value), to: Number(to.value), note: note.value, day: day.value }, msg, true);
-        } else send({ t: 'add', type: type === 1 ? 'kirim' : 'chiqim', amount: a, cat: cat, acct: Number(acct.value), note: note.value, day: day.value }, msg, true);
-      };
-      if (r) form.appendChild(formBar(editable ? 'Saqlash' : 'Yopish', editable ? save : closeSheet, "O'chirish", function () { confirmDo("Bu yozuv o'chirilsinmi?", function () { send({ t: 'del', id: r[0] }, msg, true); }); }));
-      else form.appendChild(formBar('Saqlash', save));
-      v.appendChild(form);
-      if (!r) setTimeout(function () { amt.focus(); }, 50);
-    });
-  }
+  function bad(msg, text) { msg.className = 'msg bad'; msg.textContent = text; }
   function confirmDo(text, fn) {
     if (tg && tg.showConfirm && tg.platform !== 'unknown') { try { tg.showConfirm(text, function (ok) { if (ok) fn(); }); return; } catch (e) {} }
     if (window.confirm(text)) fn();
+  }
+  // Amal tugagach: varaqni yopish (back=true) yoki qayta chizish
+  function done(back) { return function () { if (back) closeSheet(); else drawSheet(); }; }
+
+  // Grafikdagi kun bosilganda: o'sha kunning hamma yozuvlari (so'm va dollar)
+  function openDay(day) {
+    sheet(String(day).padStart(2, '0') + '.' + MONTH.slice(5, 7) + '.' + MONTH.slice(0, 4) + ' · ' + WD[new Date(Date.UTC(Number(MONTH.slice(0, 4)), Number(MONTH.slice(5, 7)) - 1, day)).getUTCDay()], function (v) {
+      var rows = (D.e || []).filter(function (r) { return r[6] === day; });
+      var t = [[0, 0], [0, 0]];
+      rows.forEach(function (r) { if (!isDebtCat(r[4]) && r[1] < 2) t[r[3]][r[1]] += num(r[2]); });
+      var rep = el('div', 'rep');
+      [["Xarajat, so'm", full(t[0][0], false)], ["Kirim, so'm", full(t[0][1], false)]].concat(t[1][0] || t[1][1] ? [['Xarajat, $', full(t[1][0], true)], ['Kirim, $', full(t[1][1], true)]] : []).forEach(function (x) {
+        var r = el('div', 'set'); add(r, el('span', 'k', x[0]), el('span', 'val', x[1])); rep.appendChild(r);
+      });
+      v.appendChild(rep);
+      v.appendChild(el('div', 'lbl2', 'Yozuvlar · ' + rows.length + ' ta'));
+      if (!rows.length) v.appendChild(el('p', 'empty', "Bu kunda yozuv yo'q."));
+      rows.forEach(function (r) { v.appendChild(entryRow(r)); });
+    });
+  }
+  // Kategoriya bosilganda: shu oydagi o'sha kategoriya yozuvlari
+  function openCatEntries(key, type) {
+    sheet(catName(key) + ' · ' + monthName(MONTH), function (v) {
+      var rows = (D.e || []).filter(function (r) { return r[4] === key && r[1] === type; });
+      var t = [0, 0];
+      rows.forEach(function (r) { t[r[3]] += num(r[2]); });
+      var rep = el('div', 'rep');
+      [["Jami, so'm", full(t[0], false)]].concat(t[1] ? [['Jami, $', full(t[1], true)]] : []).concat([['Yozuvlar', rows.length + ' ta']]).forEach(function (x) {
+        var r = el('div', 'set'); add(r, el('span', 'k', x[0]), el('span', 'val', x[1])); rep.appendChild(r);
+      });
+      v.appendChild(rep);
+      var day = null;
+      rows.forEach(function (r) {
+        if (r[6] !== day) { day = r[6]; v.appendChild(el('div', 'lbl2', String(r[6]).padStart(2, '0') + '.' + MONTH.slice(5, 7))); }
+        v.appendChild(entryRow(r));
+      });
+    });
+  }
+
+  // Yozuvni tuzatish
+  function openEntry(id) {
+    var r = (D.e || []).find(function (x) { return x[0] === id; });
+    if (!r) return;
+    var editable = (r[1] === 0 || r[1] === 1) && !isDebtCat(r[4]);
+    sheet('Yozuv', function (v) {
+      var usd = r[3] === 1, cat = r[4];
+      var form = el('div', 'form'), msg = msgBox();
+      var amt = amtInput(r[2], usd); if (!editable) amt.disabled = true;
+      var acct = acctSelect(usd ? 1 : 0, r[9]);
+      var note = el('input'); note.maxLength = 80; note.value = r[5];
+      var day = el('input'); day.type = 'date'; day.max = D.today; day.value = MONTH + '-' + String(r[6]).padStart(2, '0');
+      form.appendChild(field('Summa' + (usd ? ', dollar' : ", so'm"), amt));
+      if (editable) form.appendChild(field('Kategoriya', chips(liveCats(r[1]).map(function (c) { return [c[0], c[1]]; }), cat, function (k) { cat = k; })));
+      else form.appendChild(el('p', 'hint', r[1] === 2 ? "O'tkazma — o'chirib, qaytadan yozing." : r[1] === 3 ? "Maqsad yozuvi — o'chirsangiz pul hisobga qaytadi." : "Qarz yozuvi — Hisobot → Qarzlar'da boshqariladi."));
+      add(form, field(r[1] === 2 ? 'Qayerdan' : 'Hisob', acct), field('Izoh', note), field('Sana', day), msg);
+      form.appendChild(formBar(editable ? 'Saqlash' : 'Yopish', editable ? function () {
+        var a = parseAmt(amt.value); if (!a) return bad(msg, 'Summani yozing');
+        send({ t: 'edit', id: r[0], amount: a, cat: cat, note: note.value, acct: Number(acct.value), day: day.value }, msg, done(true));
+      } : closeSheet, "O'chirish", function () { confirmDo("Bu yozuv o'chirilsinmi?", function () { send({ t: 'del', id: r[0] }, msg, done(true)); }); }));
+      v.appendChild(form);
+    });
+  }
+
+  // Kategoriyalar: odam o'zi qo'shadi, o'zgartiradi, o'chiradi
+  function openCats() {
+    sheet('Kategoriyalar', function (v) {
+      [[0, 'Chiqim'], [1, 'Kirim']].forEach(function (t) {
+        v.appendChild(el('div', 'lbl2', t[1]));
+        liveCats(t[0]).forEach(function (c) { v.appendChild(setRow(c[1], '', function () { openCat(c[0]); })); });
+        var form = el('div', 'form'), msg = msgBox(), nm = el('input'); nm.maxLength = 30; nm.placeholder = 'Yangi ' + t[1].toLowerCase() + ' kategoriyasi';
+        var w = el('div', 'newcat'); add(w, nm, btn("Qo'shish", '', function () {
+          if (!nm.value.trim()) { nm.focus(); return; }
+          send({ t: 'cat_add', name: nm.value, type: t[0] ? 'kirim' : 'chiqim' }, msg, done(false));
+        }));
+        add(form, w, msg); v.appendChild(form);
+      });
+    });
+  }
+  function openCat(key) {
+    var c = C().find(function (x) { return x[0] === key; }); if (!c) return;
+    sheet(c[1], function (v) {
+      var form = el('div', 'form'), msg = msgBox(), nm = el('input'); nm.maxLength = 30; nm.value = c[1];
+      add(form, field('Nomi', nm), msg, formBar('Saqlash', function () {
+        send({ t: 'cat_edit', id: key, name: nm.value }, msg, done(true));
+      }, "O'chirish", function () { confirmDo("«" + c[1] + "» o'chirilsinmi? Eski yozuvlarda nomi qoladi.", function () { send({ t: 'cat_edit', id: key, del: 1 }, msg, done(true)); }); }));
+      v.appendChild(form);
+    });
   }
 
   // Hisoblar
@@ -652,23 +853,41 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
     sheet('Hisoblar', function (v) {
       A().forEach(function (a) {
         var r = el('button', 'trow two'); r.type = 'button';
-        var n = el('div', 'n'); add(n, el('span', null, a[1] + (a[5] ? ' (yashirilgan)' : '')));
-        if (a[5]) n.style.color = 'var(--muted)';
+        var n = el('div', 'n'); add(n, el('span', null, a[1] + (a[5] ? ' (yashirilgan)' : ''))); if (a[5]) n.style.color = 'var(--muted)';
         add(r, n, el('span', 'tm2' + (a[4] < 0 ? ' neg' : ''), moneyS(a[4], a[2] === 1)));
         r.addEventListener('click', function () { openAccount(a[0]); }); v.appendChild(r);
       });
-      v.appendChild(el('div', 'lbl2', 'Yangi hisob'));
+      var ab = el('div', 'abar');
+      add(ab, btn("Hisob qo'shish", 'pri', openAccountNew), btn("O'tkazish", '', openTransfer));
+      v.appendChild(ab);
+    });
+  }
+  function openAccountNew() {
+    sheet('Yangi hisob', function (v) {
       var form = el('div', 'form'), msg = msgBox();
       var name = el('input'); name.maxLength = 30; name.placeholder = 'masalan: Humo karta';
       var cur = el('select'); [['UZS', "So'm"], ['USD', 'Dollar']].forEach(function (c) { var o = el('option', null, c[1]); o.value = c[0]; cur.appendChild(o); });
       var kind = el('select'); [['karta', 'Karta'], ['naqd', 'Naqd'], ['boshqa', 'Boshqa']].forEach(function (c) { var o = el('option', null, c[1]); o.value = c[0]; kind.appendChild(o); });
       var start = amtInput(0, false);
       var pr = el('div', 'pair'); add(pr, field('Valyuta', cur), field('Turi', kind));
-      add(form, field('Nomi', name), pr, field('Hozirgi qoldiq', start, "Hisobda hozir qancha pul bor — shundan boshlab hisoblanadi"), msg,
-        formBar("Hisob qo'shish", function () {
-          if (!name.value.trim()) { msg.className = 'msg bad'; msg.textContent = 'Nomini yozing'; return; }
-          send({ t: 'acct_add', name: name.value, cur: cur.value, kind: kind.value, start: parseAmt(start.value) }, msg, false, function () { openAccounts(); });
+      add(form, field('Nomi', name), pr, field('Hozirgi qoldiq', start, 'Hisobda hozir qancha pul bor'), msg,
+        formBar('Saqlash', function () {
+          if (!name.value.trim()) return bad(msg, 'Nomini yozing');
+          send({ t: 'acct_add', name: name.value, cur: cur.value, kind: kind.value, start: parseAmt(start.value) }, msg, done(true));
         }));
+      v.appendChild(form);
+    });
+  }
+  function openTransfer() {
+    sheet("Hisoblar orasida o'tkazish", function (v) {
+      var usd = CUR === 1, form = el('div', 'form'), msg = msgBox();
+      var amt = amtInput(0, usd), from = acctSelect(usd ? 1 : 0, null), to = acctSelect(usd ? 1 : 0, null);
+      if (to.options.length > 1) to.selectedIndex = 1;
+      add(form, field('Summa', amt), field('Qayerdan', from), field('Qayerga', to), msg, formBar("O'tkazish", function () {
+        var a = parseAmt(amt.value); if (!a) return bad(msg, 'Summani yozing');
+        if (!to.value || to.value === from.value) return bad(msg, 'Boshqa hisobni tanlang');
+        send({ t: 'add', type: 'otkazma', amount: a, acct: Number(from.value), to: Number(to.value), note: '', day: '' }, msg, done(true));
+      }));
       v.appendChild(form);
     });
   }
@@ -680,63 +899,79 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
       var form = el('div', 'form'), msg = msgBox();
       var name = el('input'); name.maxLength = 30; name.value = a[1];
       var bal = amtInput(Math.max(0, a[4]), usd);
-      add(form, field('Nomi', name), field('Haqiqiy qoldiq', bal, "Hisobdagi pul farq qilsa — haqiqiy summani yozing, farq to'g'rilanadi"), msg,
+      add(form, field('Nomi', name), field('Haqiqiy qoldiq', bal, "Hisobdagi pul farq qilsa — haqiqiy summani yozing"), msg,
         formBar('Saqlash', function () {
-          var want = Math.round(parseAmt(bal.value) * (usd ? 100 : 1));
-          var startNew = a[6] + (want - a[4]);
-          send({ t: 'acct_edit', id: a[0], name: name.value, start: usd ? startNew / 100 : startNew, arch: a[5] ? 1 : 0 }, msg, false, openAccounts);
-        }, a[5] ? 'Qaytarish' : 'Yashirish', function () {
-          send({ t: 'acct_edit', id: a[0], name: a[1], arch: a[5] ? 0 : 1 }, msg, false, openAccounts);
-        }));
+          var want = Math.round(parseAmt(bal.value) * (usd ? 100 : 1)), startNew = a[6] + (want - a[4]);
+          send({ t: 'acct_edit', id: a[0], name: name.value, start: usd ? startNew / 100 : startNew, arch: a[5] ? 1 : 0 }, msg, done(true));
+        }, a[5] ? 'Qaytarish' : 'Yashirish', function () { send({ t: 'acct_edit', id: a[0], name: a[1], arch: a[5] ? 0 : 1 }, msg, done(true)); }));
       v.appendChild(form);
-      var rows = (D.e || []).filter(function (r) { return r[9] === a[0] || r[10] === a[0]; }).slice(0, 20);
-      v.appendChild(el('div', 'lbl2', 'Shu oy harakatlari'));
-      if (!rows.length) v.appendChild(el('p', 'empty', "Yo'q."));
-      rows.forEach(function (r) { v.appendChild(entryRow(r)); });
     });
   }
 
-  // Byudjet
+  // Byudjet va maqsadlar
+  function openPlan() {
+    sheet('Byudjet va maqsadlar', function (v) {
+      var usd = CUR;
+      var lb = el('div', 'lbl2'); add(lb, el('span', 'grow', 'Byudjet · ' + monthName(MONTH)), link("+ Qo'shish", function () { openBudget(null); })); v.appendChild(lb);
+      var bs = (D.b || []).filter(function (b) { return b[1] === usd; });
+      if (!bs.length) v.appendChild(el('p', 'empty', "Byudjet yo'q. Masalan: «Kafe» — oyiga 800 000 so'm. 80% ga yetganda bot ogohlantiradi."));
+      bs.forEach(function (b) {
+        var r = el('button', 'trow two'); r.type = 'button';
+        var n = el('div'); n.style.minWidth = '0'; var p = b[2] ? b[3] / b[2] : 0;
+        n.appendChild(el('div', null, b[0] ? catName(b[0]) : 'Jami chiqim'));
+        var bar = el('div', 'prog'), fill = el('i'); fill.style.width = Math.max(2, Math.min(100, p * 100)) + '%';
+        fill.style.background = p >= 1 ? 'var(--danger)' : p >= 0.8 ? 'var(--warn-bar)' : 'var(--ok)'; bar.appendChild(fill); n.appendChild(bar);
+        var val = el('div', 'tm2', sm(b[3], usd === 1) + ' / ' + sm(b[2], usd === 1)); val.style.paddingLeft = '12px';
+        add(r, n, val); r.addEventListener('click', function () { openBudget(b); }); v.appendChild(r);
+      });
+      var lg = el('div', 'lbl2'); add(lg, el('span', 'grow', 'Maqsadlar'), link("+ Qo'shish", openGoalNew)); v.appendChild(lg);
+      var gs = (D.g || []).filter(Array.isArray);
+      if (!gs.length) v.appendChild(el('p', 'empty', "Maqsad yo'q. Masalan: «Mashina» — 50 mln."));
+      gs.forEach(function (g) {
+        var r = el('button', 'row'); r.type = 'button';
+        var p = g[2] ? Math.min(1, g[4] / g[2]) : 0;
+        add(r, el('div', 'av', g[6] ? 'OK' : Math.round(p * 100) + '%'));
+        var gr = el('div', 'gr'); add(gr, el('div', 't1', g[1]), el('div', 't2', sm(g[4], g[3] === 1) + (g[2] ? ' / ' + sm(g[2], g[3] === 1) : '') + (g[3] === 1 ? '' : " so'm") + (g[5] ? ' · ' + dm(g[5]) + ' gacha' : '') + (g[6] ? ' · bajarildi' : '')));
+        var bar = el('div', 'prog'), fill = el('i'); fill.style.width = Math.max(2, p * 100) + '%'; bar.appendChild(fill); gr.appendChild(bar);
+        add(r, gr, ico('chev', 16)); r.addEventListener('click', function () { openGoal(g[0]); }); v.appendChild(r);
+      });
+    });
+  }
   function openBudget(b) {
-    sheet(b ? 'Byudjet' : "Yangi byudjet", function (v) {
+    sheet(b ? 'Byudjet' : 'Yangi byudjet', function (v) {
       var usd = b ? b[1] === 1 : CUR === 1, cat = b ? b[0] : '';
-      var form = el('div', 'form'), msg = msgBox();
-      var amt = amtInput(b ? b[2] : 0, usd);
-      if (!b) form.appendChild(field("Bo'lim", chips([['', 'Jami chiqim']].concat(CATS_OUT), cat, function (k) { cat = k; })));
-      else form.appendChild(add(el('p', 'note', (b[0] ? catName(b[0]) : 'Jami chiqim') + ': shu oy ' + moneyS(b[3], usd) + ' sarflandi.')));
-      add(form, field('Oylik chegara' + (usd ? ', dollar' : ", so'm"), amt, "80% ga yetganda va oshganda bot yozadi"), msg,
+      var form = el('div', 'form'), msg = msgBox(), amt = amtInput(b ? b[2] : 0, usd);
+      if (!b) form.appendChild(field('Kategoriya', chips([['', 'Jami chiqim']].concat(liveCats(0).map(function (c) { return [c[0], c[1]]; })), cat, function (k) { cat = k; })));
+      else form.appendChild(el('p', 'note', (b[0] ? catName(b[0]) : 'Jami chiqim') + ': shu oy ' + moneyS(b[3], usd) + ' sarflandi.'));
+      add(form, field('Oylik chegara' + (usd ? ', dollar' : ", so'm"), amt, '80% ga yetganda va oshganda bot yozadi'), msg,
         formBar('Saqlash', function () {
-          var a = parseAmt(amt.value); if (!a) { msg.className = 'msg bad'; msg.textContent = 'Summani yozing'; return; }
-          send({ t: 'budget', cat: cat, cur: usd ? 'USD' : 'UZS', amount: a }, msg, true);
-        }, b ? "O'chirish" : null, function () { send({ t: 'budget', cat: b[0], cur: usd ? 'USD' : 'UZS', amount: 0 }, msg, true); }));
+          var a = parseAmt(amt.value); if (!a) return bad(msg, 'Summani yozing');
+          send({ t: 'budget', cat: cat, cur: usd ? 'USD' : 'UZS', amount: a }, msg, done(true));
+        }, b ? "O'chirish" : null, function () { send({ t: 'budget', cat: b[0], cur: usd ? 'USD' : 'UZS', amount: 0 }, msg, done(true)); }));
       v.appendChild(form);
     });
   }
-
-  // Maqsadlar
   function openGoalNew() {
     sheet('Yangi maqsad', function (v) {
-      var form = el('div', 'form'), msg = msgBox();
+      var form = el('div', 'form'), msg = msgBox(), usd = CUR === 1;
       var name = el('input'); name.maxLength = 40; name.placeholder = 'masalan: Mashina';
-      var usd = CUR === 1, amt = amtInput(0, usd);
+      var amt = amtInput(0, usd);
       var cur = el('select'); [['UZS', "So'm"], ['USD', 'Dollar']].forEach(function (c) { var o = el('option', null, c[1]); o.value = c[0]; if ((c[0] === 'USD') === usd) o.selected = true; cur.appendChild(o); });
       var dl = el('input'); dl.type = 'date'; dl.min = D.today;
       var pr = el('div', 'pair'); pr.style.gridTemplateColumns = '2fr 1fr'; add(pr, field("Qancha yig'iladi", amt), field('Valyuta', cur));
-      add(form, field('Nomi', name), pr, field('Qachongacha (ixtiyoriy)', dl), msg,
-        formBar("Maqsad qo'shish", function () {
-          var a = parseAmt(amt.value);
-          if (!name.value.trim() || !a) { msg.className = 'msg bad'; msg.textContent = 'Nomi va summasini yozing'; return; }
-          send({ t: 'goal_add', name: name.value, target: a, cur: cur.value, deadline: dl.value }, msg, true);
-        }));
+      add(form, field('Nomi', name), pr, field('Qachongacha (ixtiyoriy)', dl), msg, formBar('Saqlash', function () {
+        var a = parseAmt(amt.value); if (!name.value.trim() || !a) return bad(msg, 'Nomi va summasini yozing');
+        send({ t: 'goal_add', name: name.value, target: a, cur: cur.value, deadline: dl.value }, msg, done(true));
+      }));
       v.appendChild(form);
     });
   }
   function openGoal(id) {
     var g = (D.g || []).find(function (x) { return x[0] === id; }); if (!g) return;
     sheet(g[1], function (v) {
+      g = (D.g || []).find(function (x) { return x[0] === id; }) || g;
       var usd = g[3] === 1, left = g[2] - g[4];
-      var z = el('div', 'zres'); add(z, el('span', 't2', "Yig'ildi"), el('b', null, moneyS(g[4], usd)),
-        el('span', 't2', g[2] ? 'Maqsad: ' + moneyS(g[2], usd) + (left > 0 ? ' · qoldi ' + moneyS(left, usd) : ' · yetdi') : "Summa qo'yilmagan"));
+      var z = el('div', 'zres'); add(z, el('span', 't2', "Yig'ildi"), el('b', null, moneyS(g[4], usd)), el('span', 't2', g[2] ? 'Maqsad: ' + moneyS(g[2], usd) + (left > 0 ? ' · qoldi ' + moneyS(left, usd) : ' · yetdi') : "Summa qo'yilmagan"));
       if (g[5] && left > 0) {
         var days = Math.max(1, Math.round((Date.parse(g[5]) - Date.parse(D.today)) / 86400000)), months = Math.max(1, days / 30.4);
         z.appendChild(el('div', 't2', dm(g[5]) + ' gacha ' + days + ' kun: oyiga ≈' + moneyS(Math.ceil(left / months / (usd ? 1 : 1000)) * (usd ? 1 : 1000), usd) + " qo'yish kerak"));
@@ -745,36 +980,58 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
       var form = el('div', 'form'), msg = msgBox();
       if (!g[6]) {
         var amt = amtInput(0, usd), acct = acctSelect(usd ? 1 : 0, null);
-        add(form, field('Pul qo\'shish', amt), field('Qaysi hisobdan', acct), msg,
-          formBar("Qo'shish", function () {
-            var a = parseAmt(amt.value); if (!a) { msg.className = 'msg bad'; msg.textContent = 'Summani yozing'; return; }
-            if (!acct.value) { msg.className = 'msg bad'; msg.textContent = 'Bu valyutada hisob yo\'q'; return; }
-            send({ t: 'goal_put', id: g[0], amount: a, acct: Number(acct.value) }, msg, false, function () { openGoal(g[0]); });
-          }));
+        add(form, field("Pul qo'shish", amt), field('Qaysi hisobdan', acct), msg, formBar("Qo'shish", function () {
+          var a = parseAmt(amt.value); if (!a) return bad(msg, 'Summani yozing');
+          if (!acct.value) return bad(msg, "Bu valyutada hisob yo'q");
+          send({ t: 'goal_put', id: g[0], amount: a, acct: Number(acct.value) }, msg, done(false));
+        }));
       } else form.appendChild(msg);
-      var tgt = amtInput(g[2], usd), dl = el('input'); dl.type = 'date'; dl.value = g[5] || '';
       v.appendChild(form);
       v.appendChild(el('div', 'lbl2', 'Sozlash'));
-      var f2 = el('div', 'form'), m2 = msgBox();
-      add(f2, field("Maqsad summasi", tgt), field('Qachongacha', dl), m2,
-        formBar(g[6] ? 'Saqlash' : 'Bajarildi', function () {
-          var a = parseAmt(tgt.value) || (g[2] ? g[2] / (usd ? 100 : 1) : 0); if (!a) { m2.className = 'msg bad'; m2.textContent = 'Summani yozing'; return; }
-          send({ t: 'goal_edit', id: g[0], target: a, deadline: dl.value, done: g[6] ? 1 : 1 }, m2, true);
-        }, "O'chirish", function () { confirmDo("Maqsad o'chirilsinmi? Yig'ilgan pul hisoblarga qaytadi.", function () { send({ t: 'goal_edit', id: g[0], del: 1 }, m2, true); }); }, !g[6]));
-      if (!g[6]) f2.insertBefore(btn('Saqlash', '', function () {
-        var a = parseAmt(tgt.value); if (!a) { m2.className = 'msg bad'; m2.textContent = 'Summani yozing'; return; }
-        send({ t: 'goal_edit', id: g[0], target: a, deadline: dl.value, done: 0 }, m2, false, function () { openGoal(g[0]); });
-      }), m2);
+      var f2 = el('div', 'form'), m2 = msgBox(), tgt = amtInput(g[2], usd), dl = el('input'); dl.type = 'date'; dl.value = g[5] || '';
+      add(f2, field('Maqsad summasi', tgt), field('Qachongacha', dl), m2,
+        btn('Saqlash', '', function () { var a = parseAmt(tgt.value); if (!a) return bad(m2, 'Summani yozing'); send({ t: 'goal_edit', id: g[0], target: a, deadline: dl.value, done: g[6] ? 1 : 0 }, m2, done(false)); }),
+        formBar(g[6] ? 'Qayta ochish' : 'Bajarildi', function () { send({ t: 'goal_edit', id: g[0], target: g[2] / (usd ? 100 : 1) || 1, deadline: g[5], done: g[6] ? 0 : 1 }, m2, done(true)); },
+          "O'chirish", function () { confirmDo("Maqsad o'chirilsinmi? Yig'ilgan pul hisoblarga qaytadi.", function () { send({ t: 'goal_edit', id: g[0], del: 1 }, m2, done(true)); }); }, true));
       v.appendChild(f2);
     });
   }
 
-  // Qarz
+  // Qarzlar
+  var DF = 1;
+  function openDebts_() {
+    sheet('Qarzlar', function (v) {
+      var ds = (D.d || []).filter(Array.isArray), sum = [[0, 0], [0, 0]];
+      ds.forEach(function (d) { if (!d[9]) sum[d[2] ? 0 : 1][d[4]] += num(d[5]); });
+      var rep = el('div', 'rep');
+      [['Sizga qaytariladi', moneyS(sum[0][CUR], CUR === 1)], ['Siz qaytarasiz', moneyS(sum[1][CUR], CUR === 1)]].forEach(function (x) { var r = el('div', 'set'); add(r, el('span', 'k', x[0]), el('span', 'val', x[1])); rep.appendChild(r); });
+      v.appendChild(rep);
+      var seg = el('div', 'seg');
+      [[1, 'Menga qarz'], [0, 'Men qarzman'], [2, 'Yopilgan']].forEach(function (o) {
+        var b = el('button', null, o[1]); b.type = 'button'; b.setAttribute('aria-selected', String(DF === o[0]));
+        b.addEventListener('click', function () { DF = o[0]; drawSheet(); }); seg.appendChild(b);
+      });
+      v.appendChild(seg);
+      var list = ds.filter(function (d) { return DF === 2 ? d[9] : !d[9] && d[2] === DF; });
+      if (!list.length) v.appendChild(el('p', 'empty', DF === 2 ? "Yopilgan qarz yo'q." : "Qarz yo'q. Botga yozing: «Akmalga 1 mln qarz berdim»."));
+      list.forEach(function (d) {
+        var r = el('button', 'row'); r.type = 'button';
+        add(r, el('div', 'av', initials(d[1])));
+        var late = !d[9] && d[6] && d[6] < D.today;
+        var gr = el('div', 'gr'); add(gr, el('div', 't1', d[1]), el('div', 't2' + (late ? ' neg' : ''), (d[6] ? (late ? "muddati o'tgan · " : 'muddat ') + dm(d[6]) : 'muddatsiz') + (d[7] ? ' · ' + d[7] : '')));
+        var val = el('div', 'v', full(d[9] ? d[3] : d[5], d[4] === 1));
+        if (!d[9] && d[5] !== d[3]) val.appendChild(el('small', null, 'jami ' + full(d[3], d[4] === 1)));
+        add(r, gr, val); r.addEventListener('click', function () { openDebt(d[0]); }); v.appendChild(r);
+      });
+      var ab = el('div', 'abar'); ab.style.gridTemplateColumns = '1fr'; ab.appendChild(btn('Qarz yozish', 'pri', openDebtNew)); v.appendChild(ab);
+    });
+  }
   function openDebtNew() {
     sheet('Yangi qarz', function (v) {
       var dir = DF === 0 ? 'oldim' : 'berdim', usd = CUR === 1;
       var form = el('div', 'form'), msg = msgBox();
       var seg = el('div', 'seg'); seg.style.margin = '0 -20px';
+      var cashL = el('label', 'chk'), cash = el('input'); cash.type = 'checkbox'; cash.checked = true; add(cashL, cash, el('span', null, dir === 'berdim' ? 'Pul hisobdan chiqdi' : 'Pul hisobga tushdi'));
       [['berdim', 'Men berdim'], ['oldim', 'Men oldim']].forEach(function (o) {
         var b = el('button', null, o[1]); b.type = 'button'; b.setAttribute('aria-selected', String(dir === o[0]));
         b.addEventListener('click', function () { dir = o[0]; seg.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-selected', String(x === b)); }); cashL.lastChild.textContent = dir === 'berdim' ? 'Pul hisobdan chiqdi' : 'Pul hisobga tushdi'; });
@@ -785,44 +1042,37 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
       var cur = el('select'); [[0, "So'm"], [1, 'Dollar']].forEach(function (c) { var o = el('option', null, c[1]); o.value = c[0]; if ((usd ? 1 : 0) === c[0]) o.selected = true; cur.appendChild(o); });
       cur.addEventListener('change', function () { usd = cur.value === '1'; var na = acctSelect(usd ? 1 : 0, null); acct.replaceWith(na); acct = na; });
       var due = el('input'); due.type = 'date'; due.min = D.today;
-      var note = el('input'); note.maxLength = 80;
-      var cashL = el('label', 'chk'), cash = el('input'); cash.type = 'checkbox'; cash.checked = true; add(cashL, cash, el('span', null, 'Pul hisobdan chiqdi'));
       var pr = el('div', 'pair'); pr.style.gridTemplateColumns = '2fr 1fr'; add(pr, field('Summa', amt), field('Valyuta', cur));
-      add(form, seg, field('Kim', person), pr, field('Hisob', acct), cashL, field("Qaytarish sanasi (ixtiyoriy)", due, 'Shu kuni bot eslatadi'), field('Izoh', note), msg,
+      add(form, seg, field('Kim', person), pr, field('Hisob', acct), cashL, field('Qaytarish sanasi (ixtiyoriy)', due, 'Shu kuni bot eslatadi'), msg,
         formBar('Saqlash', function () {
-          var a = parseAmt(amt.value);
-          if (!person.value.trim() || !a) { msg.className = 'msg bad'; msg.textContent = 'Ism va summani yozing'; return; }
-          if (!acct.value) { msg.className = 'msg bad'; msg.textContent = 'Bu valyutada hisob yo\'q'; return; }
-          send({ t: 'debt_add', person: person.value, dir: dir, amount: a, acct: Number(acct.value), due: due.value, note: note.value, cash: cash.checked }, msg, true);
+          var a = parseAmt(amt.value); if (!person.value.trim() || !a) return bad(msg, 'Ism va summani yozing');
+          if (!acct.value) return bad(msg, "Bu valyutada hisob yo'q");
+          send({ t: 'debt_add', person: person.value, dir: dir, amount: a, acct: Number(acct.value), due: due.value, note: '', cash: cash.checked }, msg, done(true));
         }));
       v.appendChild(form);
-      setTimeout(function () { person.focus(); }, 50);
     });
   }
   function openDebt(id) {
-    var d = (D.d || []).find(function (x) { return x[0] === id; }); if (!d) return;
-    sheet(d[1], function (v) {
+    if (!(D.d || []).some(function (x) { return x[0] === id; })) return;
+    sheet('Qarz', function (v) {
+      var d = (D.d || []).find(function (x) { return x[0] === id; }); if (!d) return;
       var usd = d[4] === 1;
-      var z = el('div', 'zres'); add(z, el('span', 't2', d[9] ? 'Yopilgan' : d[2] ? 'Sizga qaytarishi kerak' : 'Siz qaytarishingiz kerak'), el('b', null, moneyS(d[9] ? d[3] : d[5], usd)),
-        el('span', 't2', 'Jami ' + moneyS(d[3], usd) + ' · ' + dm(d[8]) + ' da' + (d[6] ? ' · muddat ' + dm(d[6]) : '') + (d[7] ? ' · ' + d[7] : '')));
-      v.appendChild(z);
+      v.appendChild(add(el('div', 'zres'), el('span', 't2', d[1] + ' · ' + (d[9] ? 'yopilgan' : d[2] ? 'sizga qaytarishi kerak' : 'siz qaytarishingiz kerak')), el('b', null, moneyS(d[9] ? d[3] : d[5], usd)),
+        el('span', 't2', 'Jami ' + moneyS(d[3], usd) + ' · ' + dm(d[8]) + ' da' + (d[6] ? ' · muddat ' + dm(d[6]) : ''))));
       var form = el('div', 'form'), msg = msgBox();
       if (!d[9]) {
         var amt = amtInput(0, usd), acct = acctSelect(usd ? 1 : 0, null);
         add(form, field(d[2] ? 'Qancha qaytdi' : 'Qancha qaytardingiz', amt, "Qisman ham bo'ladi"), field(d[2] ? 'Qaysi hisobga' : 'Qaysi hisobdan', acct), msg,
           formBar("To'lovni yozish", function () {
-            var a = parseAmt(amt.value); if (!a) { msg.className = 'msg bad'; msg.textContent = 'Summani yozing'; return; }
-            send({ t: 'debt_pay', id: d[0], amount: a, acct: Number(acct.value) }, msg, false, function () { openDebt(d[0]); });
-          }, "To'liq yopish", function () { send({ t: 'debt_pay', id: d[0], amount: 'all', acct: Number(acct.value) }, msg, true); }));
+            var a = parseAmt(amt.value); if (!a) return bad(msg, 'Summani yozing');
+            send({ t: 'debt_pay', id: d[0], amount: a, acct: Number(acct.value) }, msg, done(false));
+          }, "To'liq yopish", function () { send({ t: 'debt_pay', id: d[0], amount: 'all', acct: Number(acct.value) }, msg, done(true)); }));
         var due = el('input'); due.type = 'date'; due.value = d[6] || ''; due.min = D.today;
-        form.appendChild(field('Qaytarish sanasi', due));
-        form.appendChild(btn('Sanani saqlash', '', function () { send({ t: 'debt_edit', id: d[0], due: due.value, closed: 0 }, msg, false, function () { openDebt(d[0]); }); }));
+        add(form, field('Qaytarish sanasi', due), btn('Sanani saqlash', '', function () { send({ t: 'debt_edit', id: d[0], due: due.value, closed: 0 }, msg, done(false)); }));
       } else form.appendChild(msg);
-      form.appendChild(formBar("Qarzni o'chirish", function () { confirmDo("Qarz va unga bog'liq yozuvlar o'chirilsinmi?", function () { send({ t: 'debt_edit', id: d[0], del: 1 }, msg, true); }); }));
-      form.lastChild.firstChild.className = 'btn danger';
+      var del = btn("Qarzni o'chirish", 'danger', function () { confirmDo("Qarz va unga bog'liq yozuvlar o'chirilsinmi?", function () { send({ t: 'debt_edit', id: d[0], del: 1 }, msg, done(true)); }); });
+      del.style.marginTop = '16px'; del.style.width = '100%'; form.appendChild(del);
       v.appendChild(form);
-      var rows = (D.e || []).filter(function (r) { return r[11] === d[0]; });
-      if (rows.length) { v.appendChild(el('div', 'lbl2', 'Shu oydagi harakatlar')); rows.forEach(function (r) { v.appendChild(entryRow(r)); }); }
     });
   }
 
@@ -830,121 +1080,88 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
   var ADVICE = '';
   function openAdvice() {
     sheet('AI tahlil · ' + monthName(MONTH), function (v) {
-      var box = el('p', 'ai', ADVICE || "AI shu oyingizni o'tgan oy bilan solishtiradi: qaysi bo'lim oshgan, byudjet, qarz va maqsadlar bo'yicha aniq maslahat beradi. Kuniga cheklangan marta.");
+      var box = el('p', 'ai', ADVICE || "AI shu oyni o'tgan oy bilan solishtiradi va qisqa maslahat beradi.");
       var form = el('div', 'form'), msg = msgBox();
-      v.appendChild(box);
+      add(v, box);
       add(form, msg, formBar('Tahlil qilish', function () {
         msg.className = 'msg'; msg.textContent = 'AI tahlil qilyapti, 10–20 soniya…';
-        send({ t: 'advice' }, msg, false, function (r) { ADVICE = r.text || ''; box.textContent = ADVICE || "Tahlil bo'lmadi."; msg.textContent = ''; });
+        send({ t: 'advice' }, msg, function (r) { ADVICE = r.text || ''; box.textContent = ADVICE || "Tahlil bo'lmadi."; msg.textContent = ''; });
       }));
-      v.appendChild(form);
-      v.appendChild(el('p', 'note', "AI maslahati — raqamlarni o'zingiz ham tekshiring."));
+      add(v, form, el('p', 'note', "AI maslahati — raqamlarni o'zingiz ham tekshiring."));
     });
   }
 
-  // Zakot kalkulyatori (faqat shu sahifada hisoblanadi, hech qayerga yuborilmaydi)
+  // Zakot kalkulyatori (faqat shu sahifada hisoblanadi)
   function openZakat() {
     sheet('Zakot kalkulyatori', function (v) {
       var form = el('div', 'form');
-      var sumUZS = liveAccts(0).reduce(function (t, a) { return t + Math.max(0, a[4]); }, 0);
-      var sumUSD = liveAccts(1).reduce(function (t, a) { return t + Math.max(0, a[4]); }, 0);
+      var sumUZS = liveAccts(0).reduce(function (t, a) { return t + Math.max(0, a[4]); }, 0), sumUSD = liveAccts(1).reduce(function (t, a) { return t + Math.max(0, a[4]); }, 0);
       var owedToMe = 0, iOwe = 0;
       (D.d || []).forEach(function (d) { if (d[9] || d[4]) return; if (d[2]) owedToMe += d[5]; else iOwe += d[5]; });
-      var cash = amtInput(sumUZS, false), usdI = amtInput(sumUSD, true), rate = amtInput(0, false);
-      var gold = amtInput(0, false), gPrice = amtInput(0, false), goods = amtInput(0, false), recv = amtInput(owedToMe, false), debt = amtInput(iOwe, false);
+      var cash = amtInput(sumUZS, false), usdI = amtInput(sumUSD, true), rate = amtInput(0, false), gold = amtInput(0, false), gPrice = amtInput(0, false), goods = amtInput(0, false), recv = amtInput(owedToMe, false), debt = amtInput(iOwe, false);
       var res = el('div', 'zres');
-      var pr = el('div', 'pair'); add(pr, field("Dollar", usdI), field("1 $ kursi, so'm", rate));
+      var pr = el('div', 'pair'); add(pr, field('Dollar', usdI), field("1 $ kursi, so'm", rate));
       var pr2 = el('div', 'pair'); add(pr2, field('Oltin, gramm', gold), field("1 g oltin narxi, so'm", gPrice));
-      add(form, field("Naqd va hisoblardagi pul, so'm", cash, "Hisoblaringizdan olindi — kerak bo'lsa o'zgartiring"), pr, pr2,
-        field("Savdo mollari qiymati, so'm", goods), field("Sizga qaytadigan qarzlar, so'm", recv), field("Sizning qarzingiz, so'm", debt));
-      v.appendChild(form); v.appendChild(res);
+      add(form, field("Naqd va hisoblardagi pul, so'm", cash, 'Hisoblaringizdan olindi'), pr, pr2, field("Savdo mollari qiymati, so'm", goods), field("Sizga qaytadigan qarzlar, so'm", recv), field("Sizning qarzingiz, so'm", debt));
+      add(v, form, res);
       function calc() {
         var usdV = parseAmt(usdI.value), r = parseAmt(rate.value), gp = parseAmt(gPrice.value);
         var total = parseAmt(cash.value) + usdV * r + parseAmt(gold.value) * gp + parseAmt(goods.value) + parseAmt(recv.value) - parseAmt(debt.value);
-        var nisab = 85 * gp;
-        clear(res);
+        var nisab = 85 * gp; clear(res);
         if (usdV && !r) { res.appendChild(el('span', 't2', 'Dollar kursini yozing.')); return; }
-        if (!gp) { res.appendChild(el('span', 't2', "Nisobni hisoblash uchun 1 gramm oltin narxini yozing (nisob = 85 g oltin).")); return; }
-        add(res, el('span', 't2', 'Zakot olinadigan mol: ' + full(Math.round(total), false) + " so'm · nisob: " + full(Math.round(nisab), false) + " so'm"));
-        if (total < nisab) { res.appendChild(el('b', null, 'Zakot farz emas')); res.appendChild(el('span', 't2', "Mol nisobga yetmaydi.")); return; }
+        if (!gp) { res.appendChild(el('span', 't2', '1 gramm oltin narxini yozing (nisob = 85 g oltin).')); return; }
+        add(res, el('span', 't2', 'Mol: ' + full(Math.round(total), false) + " so'm · nisob: " + full(Math.round(nisab), false) + " so'm"));
+        if (total < nisab) { add(res, el('b', null, 'Zakot farz emas'), el('span', 't2', 'Mol nisobga yetmaydi.')); return; }
         add(res, el('b', null, full(Math.round(total * 0.025), false) + " so'm"), el('span', 't2', "2,5% — mol bir hijriy yil to'liq qo'lingizda turgan bo'lsa."));
       }
       [cash, usdI, rate, gold, gPrice, goods, recv, debt].forEach(function (i) { i.addEventListener('input', calc); });
       calc();
-      v.appendChild(el('p', 'note', "Hisob taxminiy. Aniq hukm uchun imom yoki muftiyga murojaat qiling."));
+      v.appendChild(el('p', 'note', 'Hisob taxminiy. Aniq hukm uchun imom yoki muftiyga murojaat qiling.'));
     });
   }
 
-  // Moliyaviy savodxonlik: qisqa darslar (umumiy qoidalar)
+  // Moliyaviy savodxonlik
   var LESSONS = [
-    ['Avval o\'zingizga to\'lang', "Kirim tushgan kuniyoq uning 10–20% ini jamg'arma hisobiga yoki maqsadga o'tkazing. Oy oxirida «nima qolsa» yig'ish odatda ishlamaydi: qolmaydi."],
-    ['50 / 30 / 20 qoidasi', "Kirimning taxminan 50% i zarur xarajatga (uy, oziq-ovqat, kommunal, yo'l), 30% i xohishga (kafe, dam olish, kiyim), 20% i jamg'arma va qarz to'lashga. Bu aniq qonun emas — o'z raqamlaringizni shu bilan solishtirib ko'ring."],
-    ['Favqulodda zaxira', "3–6 oylik zarur xarajatga teng pulni alohida hisobda saqlang. Kasallik, ishsiz qolish yoki mashina ta'miri kabi kutilmagan holatda qarzga botmaslikka yordam beradi. «Reja»da maqsad qilib qo'ying."],
-    ['Qarzni boshqarish', "Oylik qarz to'lovlari kirimning uchdan biridan oshmasin. Bir nechta qarz bo'lsa, avval eng qimmatini (foizi yuqori yoki muddati o'tganini) yoping. Har qarzga qaytarish sanasini yozing — bot eslatadi."],
-    ['Mayda xarajatlar', "Kuniga 30 ming so'mlik kofe va taksi oyiga taxminan 900 ming bo'ladi. Eng ko'p mayda xarajat ketadigan bo'limga oylik byudjet qo'ying — 80% ga yetganda bot ogohlantiradi."],
-    ['Har kuni yozing', "Yozilmagan xarajatni boshqarib bo'lmaydi. Pul sarflagan zahoti botga bir qator yozing yoki ovoz yuboring. Haftada bir marta hisobotni va «AI tahlil»ni ko'ring."]
+    ["Avval o'zingizga to'lang", "Kirim tushgan kuniyoq uning 10–20% ini jamg'arma hisobiga yoki maqsadga o'tkazing. Oy oxirida «nima qolsa» yig'ish odatda ishlamaydi: qolmaydi."],
+    ['50 / 30 / 20 qoidasi', "Kirimning taxminan 50% i zarur xarajatga, 30% i xohishga, 20% i jamg'arma va qarz to'lashga. Bu aniq qonun emas — o'z raqamlaringizni shu bilan solishtiring."],
+    ['Favqulodda zaxira', "3–6 oylik zarur xarajatga teng pulni alohida hisobda saqlang. Kutilmagan holatda qarzga botmaslikka yordam beradi."],
+    ['Qarzni boshqarish', "Oylik qarz to'lovlari kirimning uchdan biridan oshmasin. Avval eng qimmat (foizi yuqori yoki muddati o'tgan) qarzni yoping."],
+    ['Mayda xarajatlar', "Kuniga 30 ming so'mlik kofe va taksi oyiga taxminan 900 ming bo'ladi. Shu kategoriyaga oylik byudjet qo'ying."],
+    ['Har kuni yozing', "Yozilmagan xarajatni boshqarib bo'lmaydi. Pul sarflagan zahoti summani yozing — 5 soniya ketadi."]
   ];
   function openLessons() {
     sheet('Moliyaviy savodxonlik', function (v) {
-      LESSONS.forEach(function (l, i) {
-        v.appendChild(el('div', 'lbl2', (i + 1) + '. ' + l[0]));
-        v.appendChild(el('p', 'note', l[1]));
-      });
-      v.appendChild(el('p', 'note', "Bu umumiy qoidalar — shaxsiy moliyaviy maslahat emas."));
-    });
-  }
-
-  // Statistika: bo'limlar va 6 oy
-  function openStats() {
-    sheet('Statistika · ' + monthName(MONTH), function (v) {
-      var usd = CUR;
-      v.appendChild(el('div', 'lbl2', "Chiqim bo'limlari")); catTable(v, usd, 0, 0);
-      v.appendChild(el('div', 'lbl2', "Kirim bo'limlari")); catTable(v, usd, 1, 0);
-      v.appendChild(el('div', 'lbl2', 'Oxirgi 6 oy'));
-      v.appendChild(add(el('div', 'trow mon3 h'), el('span', null, 'Oy'), el('span', 'tm2', 'Kirim'), el('span', 'tm2', 'Chiqim')));
-      (D.mo || []).forEach(function (m) {
-        if (!Array.isArray(m)) return;
-        v.appendChild(add(el('div', 'trow mon3'), add(el('div', 'n'), el('span', null, monthName(String(m[0])))),
-          el('span', 'tm2 pos', full(num(m[usd ? 3 : 1]), usd)), el('span', 'tm2', full(num(m[usd ? 4 : 2]), usd))));
-      });
+      LESSONS.forEach(function (l, i) { add(v, el('div', 'lbl2', (i + 1) + '. ' + l[0]), el('p', 'note', l[1])); });
+      v.appendChild(el('p', 'note', 'Bu umumiy qoidalar — shaxsiy moliyaviy maslahat emas.'));
     });
   }
 
   // ---------- Umumiy chizish ----------
+  var TITLES = { home: 'Pul daftari', list: 'Yozuvlar', rep: 'Hisobot' };
   function render() {
-    $('mName').textContent = monthName(MONTH);
-    $('mNext').disabled = MONTH >= THIS_MONTH;
-    $('meta').textContent = MONTH.slice(5, 7) + '.' + MONTH.slice(0, 4);
-    if (!D || SHEET) return;
-    var hasUsd = A().some(function (a) { return a[2] === 1 && !a[5]; }) || (D.e || []).some(function (r) { return r[3] === 1; });
-    $('curSeg').hidden = !hasUsd || TAB === 'more';
-    if (!hasUsd) CUR = 0;
-    document.querySelectorAll('#curSeg button').forEach(function (b) { b.setAttribute('aria-selected', String(Number(b.dataset.cur) === CUR)); });
-    var late = (D.d || []).filter(function (d) { return !d[9] && d[6] && d[6] <= D.today && d[5] > 0; }).length;
-    $('debtBdg').hidden = !late; $('debtBdg').textContent = String(late);
-    ({ home: renderHome, list: renderList, plan: renderPlan, debt: renderDebt, more: renderMore })[TAB]();
+    $('title').textContent = TITLES[TAB];
+    $('meta').textContent = TAB === 'home' ? (D ? dm(D.today) : '') : MONTH.slice(5, 7) + '.' + MONTH.slice(0, 4);
+    if (STACK.length) return;
+    if (!D) clear($('v-' + TAB));
+    else if (TAB === 'home') renderHome();
+    else if (TAB === 'list') renderList(); else renderRep();
   }
   function go(tab) {
     TAB = tab;
-    ['home', 'list', 'plan', 'debt', 'more'].forEach(function (t) { $('v-' + t).hidden = t !== tab; });
-    $('monthBar').hidden = tab === 'more' || tab === 'debt';
+    if (tab === 'home' && MONTH !== THIS_MONTH) { MONTH = THIS_MONTH; showCached(); load(true); }
+    ['home', 'list', 'rep'].forEach(function (t) { $('v-' + t).hidden = t !== tab; });
     document.querySelectorAll('.tabs button').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.tab === tab)); });
-    render();
-    window.scrollTo(0, 0);
+    render(); window.scrollTo(0, 0);
   }
   document.querySelectorAll('.tabs button').forEach(function (b) { b.addEventListener('click', function () { go(b.dataset.tab); }); });
-  document.querySelectorAll('#curSeg button').forEach(function (b) { b.addEventListener('click', function () { CUR = Number(b.dataset.cur); render(); }); });
-  $('mPrev').appendChild(ico('back', 18)); $('mNext').appendChild(ico('chev', 18));
-  $('mPrev').addEventListener('click', function () { MONTH = shiftMonth(MONTH, -1); showCached(); load(true); });
-  $('mNext').addEventListener('click', function () { if (MONTH < THIS_MONTH) { MONTH = shiftMonth(MONTH, 1); showCached(); load(true); } });
 
   // ---------- Kesh ----------
   function uidKey() { try { return String(tg.initDataUnsafe.user.id); } catch (e) { return 'x'; } }
-  function cacheKey(m) { return 'pb2:' + uidKey() + ':' + m; }
+  function cacheKey(m) { return 'pb3:' + uidKey() + ':' + m; }
   function showCached() {
     var c = null; try { c = JSON.parse(localStorage.getItem(cacheKey(MONTH)) || 'null'); } catch (e) {}
     if (c && c.m === MONTH && c.v === 2) D = c;
-    else if (D) { D = { v: 2, m: MONTH, today: D.today, last: D.last, e: [], mo: D.mo, a: D.a, d: D.d, g: D.g, b: [] }; }
+    else if (D) D = { v: 2, m: MONTH, today: D.today, last: D.last, e: [], mo: D.mo, a: D.a, d: D.d, g: D.g, b: [], c: D.c };
     render();
   }
   function keep(d) { var c = JSON.parse(JSON.stringify(d)); delete c.r; try { localStorage.setItem(cacheKey(d.m), JSON.stringify(c)); } catch (e) {} }
@@ -985,7 +1202,6 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
     return JSON.parse(await new Response(out).text());
   }
   function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
-  // Bitta so'rov: a = {t: 'get' | amal, ...}; javob - shu oyning yangi ma'lumoti (+ r: amal natijasi)
   async function call(a, m, limitMs) {
     var kp = await crypto.subtle.generateKey({ name: 'ECDH', namedCurve: 'P-256' }, true, ['deriveBits']);
     var pageKey = b64u(new Uint8Array(await crypto.subtle.exportKey('raw', kp.publicKey)));
@@ -996,7 +1212,7 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
     if (!r.ok) throw new Error(r.status === 429 ? "kunlik chegara, keyinroq urinib ko'ring" : 'server ' + r.status);
     var parts = {}, total = 0, t0 = Date.now();
     while (Date.now() - t0 < (limitMs || 40000)) {
-      await wait(Date.now() - t0 < 6000 ? 1000 : 2500);
+      await wait(Date.now() - t0 < 6000 ? 800 : 2500);
       var p = await fetch(NTFY + '/' + topic + '/json?poll=1&since=all', { cache: 'no-store', credentials: 'omit' }).catch(function () { return null; });
       if (!p || !p.ok) continue;
       var lines = (await p.text()).split('\n');
@@ -1014,18 +1230,15 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
         return d;
       }
     }
-    throw new Error('bot javob bermadi (Mac yoqilganmi?)');
+    throw new Error('bot javob bermadi — Mac yoqilganini tekshiring');
   }
   function canAsk() {
-    if (window.__PB_DEMO) return true;
-    if (!INIT || !BOT_PUB || !REQ) { status('Sahifani botdagi «Daftar» tugmasidan oching.', 'bad', true); return false; }
+    if (!INIT || !BOT_PUB || !REQ) { status("Sahifani botdagi «Yozish» tugmasidan oching.", 'bad', true); return false; }
     return true;
   }
-
   async function load(manual) {
     if (busy) { if (manual) again = true; return; }
     if (!manual && Date.now() - lastLoad < 7000) return; // qo'llanma: 7 soniyadan tez-tez emas
-    if (window.__PB_DEMO) { D = window.__PB_DEMO(MONTH); render(); return; }
     if (!canAsk()) return;
     busy = true; lastLoad = Date.now();
     var want = MONTH;
@@ -1033,7 +1246,7 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
     try {
       var d = await call({ t: 'get' }, want);
       keep(d);
-      if (MONTH === want) { D = d; status(''); render(); }
+      if (MONTH === want) { D = d; status(''); if (STACK.length) drawSheet(); else render(); }
     } catch (e) {
       if (MONTH === want) status("Yangilab bo'lmadi: " + (e && e.message ? e.message : e), 'bad', true);
     } finally {
@@ -1041,35 +1254,37 @@ select{appearance:none;-webkit-appearance:none;background-image:none}
       if (again || MONTH !== want) { again = false; load(true); }
     }
   }
-
-  // Amal yuborish: forma tugmalari o'chadi, natija formada va tepada ko'rinadi
+  // Amal yuborish. after(r) - muvaffaqiyatdan keyin. quiet - tepadagi xabarni after o'zi chiqaradi
   var sending = false;
-  async function send(a, msgEl, closeAfter, after) {
+  async function send(a, msgEl, after, quiet, scopeEl) {
     if (sending || !canAsk()) return;
-    if (!window.__PB_DEMO && Date.now() - OPENED > 7000 * 1000) { msgEl.className = 'msg bad'; msgEl.textContent = 'Sahifa eskirdi — yopib, qaytadan oching.'; return; }
+    if (Date.now() - OPENED > 7000 * 1000) { bad(msgEl, 'Sahifa eskirdi — yopib, qaytadan oching.'); return; }
     sending = true;
-    $('v-sheet').querySelectorAll('button').forEach(function (b) { b.disabled = true; });
+    var scope = scopeEl || (STACK.length ? $('v-sheet') : $('v-' + TAB));
+    scope.querySelectorAll('button').forEach(function (b) { b.disabled = true; });
     msgEl.className = 'msg'; if (a.t !== 'advice') msgEl.textContent = 'Saqlanmoqda…';
     try {
-      var d = window.__PB_DEMO ? window.__PB_DEMO_ACT(a, MONTH) : await call(a, MONTH, a.t === 'advice' ? 90000 : 40000);
+      var d = await call(a, MONTH, a.t === 'advice' ? 90000 : 40000);
       keep(d); D = d;
-      var r = d.r || { ok: false, msg: 'Javob yo\'q' };
-      if (!r.ok) { msgEl.className = 'msg bad'; msgEl.textContent = r.msg; return; }
+      var r = d.r || { ok: false, msg: "Javob yo'q" };
+      if (!r.ok) { bad(msgEl, r.msg); return; }
       if (tg && tg.HapticFeedback) { try { tg.HapticFeedback.notificationOccurred('success'); } catch (e) {} }
-      var extra = (r.warn || []).join(' ');
-      if (closeAfter) { closeSheet(); status(r.msg + (extra ? ' · ' + extra : ''), extra ? 'bad' : 'good', !!extra); }
-      else { msgEl.textContent = r.msg; if (after) after(r); status(r.msg, 'good'); }
+      msgEl.textContent = '';
+      if (!quiet) status(r.msg + ((r.warn || []).length ? ' · ' + r.warn.join(' ') : ''), (r.warn || []).length ? 'bad' : 'good', (r.warn || []).length > 0);
+      if (after) after(r);
     } catch (e) {
-      msgEl.className = 'msg bad'; msgEl.textContent = "Yuborib bo'lmadi: " + (e && e.message ? e.message : e);
+      bad(msgEl, "Yuborib bo'lmadi: " + (e && e.message ? e.message : e));
     } finally {
       sending = false;
-      $('v-sheet').querySelectorAll('button').forEach(function (b) { b.disabled = false; });
+      scope.querySelectorAll('button').forEach(function (b) { b.disabled = false; });
     }
   }
 
-  // Sahifa qayta ko'rinsa (Telegram'dan qaytilsa) yumshoq yangilanadi; forma ochiq bo'lsa kutadi
-  document.addEventListener('visibilitychange', function () { if (!document.hidden && !SHEET) load(false); });
+  // Sahifa qayta ko'rinsa yumshoq yangilanadi; ichki ekran ochiq yoki summa yozilayotgan bo'lsa kutadi
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && !STACK.length && $('ov').hidden) load(false); });
   showCached();
+  document.querySelector('main').classList.add('withfab');
+  go('home');
   load(true);
 })();
 </script>
